@@ -1,0 +1,35 @@
+html {
+	overflow-y: scroll;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #212121;
+	font-family: 'Roboto', sans-serrif;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 8px;
+	max-width: 960px;
+}
+
+.ShowCard {
+	margin: 8px 0;
+}
+
+/* fix webkit autocomplete coloring */
+
+@-webkit-keyframes autofill {
+    to {
+        color: #666;
+        background: transparent;
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+    -webkit-text-fill-color: white !important;
+}
