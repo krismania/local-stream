@@ -19,11 +19,16 @@ app.use(function(req, res, next) {
 });
 
 // static files
-app.use(express.static('public'));
+app.use('/static', express.static('static'));
 
 // serve routes
-app.use('/', require('./modules/client'));
+app.use('/stream', require('./modules/client'));
 app.use('/api', require('./modules/api'));
+
+// redirect '/' to '/stream'
+app.get('/', function(req, res) {
+	res.redirect(303, '/stream');
+})
 
 // start the server
 var server = app.listen(8080, '0.0.0.0', function() {
