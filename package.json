@@ -6,7 +6,7 @@
   "scripts": {
     "build-client": "webpack --config webpack.config.js",
     "build-server": "babel --presets=es2015,react src/server -d build",
-    "server": "node build/server.js"
+    "start": "node build/server.js"
   },
   "repository": {
     "type": "git",

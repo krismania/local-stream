@@ -6,7 +6,7 @@ First, install dependencies with `npm install`.
 
 Next, build the react app and server with `npm run build-client` and `npm run build-server`.
 
-To start the server, use `npm run server`.
+To start the server, use `npm start`.
 
 ### Folder Structure
 ```
