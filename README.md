@@ -2,7 +2,9 @@
 stream your stuff around your house
 
 ### Setting up
-To build the app and server, use `npm run build-client` and `npm run build-server`.
+First, install dependencies with `npm install`.
+
+Next, build the react app and server with `npm run build-client` and `npm run build-server`.
 
 To start the server, use `npm run server`.
 
