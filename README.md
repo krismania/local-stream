@@ -11,13 +11,20 @@ To start the server, use `npm start`.
 ### Folder Structure
 ```
 │
-├── public
-│   Static content folder
+├── static
+│   Express serves static content from here
 │
 └─┬ src
-  ├── client
-  │   Root of the client-facing react app
-  │   
+  ├─┬ client
+  │ │ Root of the client-facing react app
+  │ │ 
+  │ ├── shared
+  │ │   Common react components
+  │ │
+  │ │   Other modules go in more specific folders
+  │ ├── admin
+  │ └── stream
+  │
   └─┬ server
     │ Root of the server (an express app)
     │
