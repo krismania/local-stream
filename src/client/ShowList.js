@@ -16,7 +16,7 @@ class ShowList extends React.Component {
 	}
 
 	handleShowTouchTap(name) {
-		this.props.onSelectShow(name);
+		window.location = '/stream/' + name;
 	}
 
 	render() {

@@ -9,6 +9,15 @@ body {
 	font-family: 'Roboto', sans-serrif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	color: white;
+	font-weight: 400;
+}
+
+p {
+	color: white;
+}
+
 .container {
 	margin: 0 auto;
 	padding: 8px;
