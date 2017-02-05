@@ -33,7 +33,9 @@ class App extends React.Component {
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<div>
 					<AppBarComponent />
-					{this.props.children}
+					<div className="container">
+						{this.props.children}
+					</div>
 				</div>
 			</MuiThemeProvider>
 		);

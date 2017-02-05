@@ -7,16 +7,15 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
-import App from './shared/App';
-// import page components
-import Stream from './stream/Stream';
-import Admin from './admin/Admin';
+import App from './App';
+import Stream from './Stream';
+import Show from './Show';
 
 ReactDOM.render(
 	<Router history={browserHistory}>
-		<Route path="/" component={App}>
-			<Route path="/stream" component={Stream} />
-			<Route path="/stream/admin" component={Admin} />
+		<Route path="/stream" component={App}>
+			<IndexRoute component={Stream} />
+			<Route path="/stream/:name" component={Show} />
 		</Route>
 	</Router>,
 	document.getElementById('root')

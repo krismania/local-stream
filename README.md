@@ -15,15 +15,9 @@ To start the server, use `npm start`.
 │   Express serves static content from here
 │
 └─┬ src
-  ├─┬ client
-  │ │ Root of the client-facing react app
-  │ │ 
-  │ ├── shared
-  │ │   Common react components
-  │ │
-  │ │   Other modules go in more specific folders
-  │ ├── admin
-  │ └── stream
+  │
+  ├── client
+  │   Root of the client-facing react app
   │
   └─┬ server
     │ Root of the server (an express app)
