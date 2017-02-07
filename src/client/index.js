@@ -10,12 +10,14 @@ injectTapEventPlugin();
 import App from './App';
 import Stream from './Stream';
 import Show from './Show';
+import Season from './Season';
 
 ReactDOM.render(
 	<Router history={browserHistory}>
 		<Route path="/stream" component={App}>
 			<IndexRoute component={Stream} />
 			<Route path="/stream/:id" component={Show} />
+			<Route path="/stream/:id/S:season" component={Season} />
 		</Route>
 	</Router>,
 	document.getElementById('root')
