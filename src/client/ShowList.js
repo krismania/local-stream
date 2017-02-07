@@ -14,6 +14,10 @@ class ShowList extends React.Component {
 		window.location = '/stream/' + name;
 	}
 
+	componentDidMount() {
+		document.title = 'Shows - Local Stream';
+	}
+
 	render() {
 		return(
 			<GridList cellHeight={180} cols={4}>

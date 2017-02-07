@@ -18,6 +18,10 @@ class Show extends React.Component {
 		this.getShowInfo();
 	}
 
+	componentDidUpdate() {
+		document.title = this.state.show.title + ' - Local Stream';
+	}
+
 	getShowInfo() {
 		fetch('/api/shows/' + this.props.params.id)
 		.then(res => res.json())
