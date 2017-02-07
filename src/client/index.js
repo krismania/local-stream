@@ -15,7 +15,7 @@ ReactDOM.render(
 	<Router history={browserHistory}>
 		<Route path="/stream" component={App}>
 			<IndexRoute component={Stream} />
-			<Route path="/stream/:title" component={Show} />
+			<Route path="/stream/:id" component={Show} />
 		</Route>
 	</Router>,
 	document.getElementById('root')

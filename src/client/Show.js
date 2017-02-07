@@ -11,14 +11,13 @@ class Show extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState({show: this.getShowInfo()});
+		this.getShowInfo();
 	}
 
 	getShowInfo() {
-		return {
-			title: 'Test Show',
-			year: '2013'
-		}
+		fetch('/api/shows/' + this.props.params.id)
+		.then(res => res.json())
+		.then(res => this.setState({ show: res }));
 	}
 
 	render() {
@@ -26,7 +25,7 @@ class Show extends React.Component {
 			<div>
 				<h1>{this.state.show.title}</h1>
 				<h3>{this.state.show.year}</h3>
-				<p>{this.props.params.name}</p>
+				<p>{this.props.params.id}</p>
 			</div>
 		)
 	}
