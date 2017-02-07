@@ -31,6 +31,7 @@ class ShowList extends React.Component {
 						style={{backgroundColor: 'white', cursor: 'pointer'}}
 						onTouchTap={() => this.handleShowTouchTap(show.id)}
 					>
+						<img src={'/static/media/' + show.id + '/cover.png'} />
 					</GridTile>
 				))}
 			</GridList>
