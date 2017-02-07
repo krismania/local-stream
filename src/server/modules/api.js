@@ -9,8 +9,9 @@ router.get('/', function(req, res) {
 function getShowInfo(id) {
 	var info = JSON.parse(fs.readFileSync('static/media/' + id + '/info.json'));
 	info.id = id;
-	// count seasons (count folders, subtract info.json)
-	info.seasons = fs.readdirSync('static/media/' + id).length - 1;
+	// get array of season folders
+	// filter non-numbers (i.e. anything apart from numbered folders)
+	info.seasons = fs.readdirSync('static/media/' + id).filter(folder => !isNaN(folder));
 
 	return info;
 }

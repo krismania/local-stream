@@ -23,7 +23,7 @@ class ShowList extends React.Component {
 						key={Math.random()}
 						containerElement="ShowTileContainer"
 						title={show.title}
-						subtitle={show.seasons + ' season' + (show.seasons > 1 ? 's' : '')}
+						subtitle={show.seasons.length + ' season' + (show.seasons > 1 ? 's' : '')}
 						style={{backgroundColor: 'white', cursor: 'pointer'}}
 						onTouchTap={() => this.handleShowTouchTap(show.id)}
 					>
