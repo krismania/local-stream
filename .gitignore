@@ -8,3 +8,6 @@ node_modules
 
 # Webpack build directory
 build
+
+# Media directory
+static/media
