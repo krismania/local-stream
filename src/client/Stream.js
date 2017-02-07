@@ -7,12 +7,20 @@ class Stream extends React.Component {
 	
 	constructor(props) {
 		super(props);
+
+		this.state = { shows: [] }
+	}
+
+	componentDidMount() {
+		fetch('/api/shows')
+		.then(res => res.json())
+		.then(res => this.setState({ shows: res }));
 	}
 
 	render() {
 		return (
 			<div>
-				<ShowList/>
+				<ShowList shows={this.state.shows} />
 			</div>
 		)
 	}
