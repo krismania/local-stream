@@ -35,6 +35,7 @@ class Show extends React.Component {
 					{this.state.show.seasons.map(function(season) {
 						return (
 							<ListItem
+								key={season}
 								primaryText={'Season ' + season}
 								onTouchTap={() => this.handleSeasonTouchTap(season)}
 							/>
