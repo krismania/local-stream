@@ -6,7 +6,9 @@ class Show extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { show: { title: '', year: '', seasons: [] } };
+		this.state = { 
+			show: { title: '', year: '', seasons: [] }
+		};
 
 		this.getShowInfo = this.getShowInfo.bind(this);
 		this.handleSeasonTouchTap = this.handleSeasonTouchTap.bind(this);

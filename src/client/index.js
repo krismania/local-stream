@@ -11,6 +11,7 @@ import App from './App';
 import Stream from './Stream';
 import Show from './Show';
 import Season from './Season';
+import Player from './Player';
 
 ReactDOM.render(
 	<Router history={browserHistory}>
@@ -18,6 +19,7 @@ ReactDOM.render(
 			<IndexRoute component={Stream} />
 			<Route path="/stream/:id" component={Show} />
 			<Route path="/stream/:id/S:season" component={Season} />
+			<Route path="/stream/:id/S:season/:episode" component={Player} />
 		</Route>
 	</Router>,
 	document.getElementById('root')

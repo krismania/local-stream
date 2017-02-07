@@ -24,10 +24,6 @@ p {
 	max-width: 960px;
 }
 
-.ShowCard {
-	margin: 8px 0;
-}
-
 /* fix webkit autocomplete coloring */
 
 @-webkit-keyframes autofill {

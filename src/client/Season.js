@@ -13,6 +13,7 @@ class Show extends React.Component {
 
 		this.getShowInfo = this.getShowInfo.bind(this);
 		this.getEpisodes = this.getEpisodes.bind(this);
+		this.handleEpisodeTouchTap = this.handleEpisodeTouchTap.bind(this);
 	}
 
 	componentDidMount() {
@@ -30,6 +31,10 @@ class Show extends React.Component {
 		fetch('/api/shows/' + this.props.params.id + '/S' + this.props.params.season)
 		.then(res => res.json())
 		.then(res => this.setState({ season: res }));
+	}
+
+	handleEpisodeTouchTap(episode) {
+		window.location = '/stream/' + this.props.params.id + '/S' + this.props.params.season + '/' + episode;
 	}
 
 	render() {
