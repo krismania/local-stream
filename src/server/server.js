@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var fs = require('fs');
-var helper
+var log = require('./modules/log');
 
 var app = express();
 
@@ -37,29 +37,3 @@ var server = app.listen(8080, '0.0.0.0', function() {
 
 	log('Listening at ' + host + ':' + port);
 });
-
-// ------------- //
-//    HELPERS    //
-// ------------- //
-
-// logger function, appends event time to calls
-function log(message) {
-	// get the current time (in hh:mm:ss)
-	var date = new Date();
-	var time = {};
-
-	time.hour = date.getHours();
-	time.min = date.getMinutes();
-	time.sec = date.getSeconds();
-
-	// pad numbers < 10 with 0
-	for (var num in time) {
-		time[num] = (time[num] < 10 ? "0" : "") + time[num];
-	}
-
-	// format the output message
-	var output = "[" + time.hour + ":" + time.min + ":" + time.sec + "] " + message;
-
-	// print to console
-	console.log(output);
-}

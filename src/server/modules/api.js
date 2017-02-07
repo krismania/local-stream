@@ -1,3 +1,4 @@
+var log = require('./log');
 var router = require('express').Router();
 var fs = require('fs');
 
@@ -26,6 +27,7 @@ function getSeasonEps(id, season) {
 
 // list all available shows
 router.get('/shows', function(req, res) {
+	log('Request shows');
 	var shows = [];
 	var showFolders = fs.readdirSync('static/media');
 
@@ -38,11 +40,13 @@ router.get('/shows', function(req, res) {
 
 // send information about the specified show
 router.get('/shows/:id', function(req, res) {
+	log('Request show: ' + req.params.id);
 	res.json(getShowInfo(req.params.id));
 });
 
 // list episodes in show season
 router.get('/shows/:id/S:season', function(req, res) {
+	log('Request show: ' + req.params.id + ' season: ' + req.params.season);
 	var eps = { episodes: getSeasonEps(req.params.id, req.params.season) };
 	res.json(eps);
 });

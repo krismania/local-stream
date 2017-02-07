@@ -1,3 +1,4 @@
+var log = require('./log');
 var router = require('express').Router();
 
 router.get('/bundle.js', function(req, res) {
