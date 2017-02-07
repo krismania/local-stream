@@ -20,10 +20,12 @@ function getSeasonEps(id, season) {
 	var eps = [];
 	var readDir = fs.readdirSync('static/media/' + id + '/' + season);
 	// remove files that aren't .mp4s & remove file extension
-	readDir = readDir.filter((file) => file.slice(-3) === 'mp4')
+	eps = readDir.filter((file) => file.slice(-3) === 'mp4')
 	                 .map((file) => parseInt(file.slice(0, -4)));
+	// sort episodes
+	eps.sort((a, b) => a - b);
 
-	return readDir;
+	return eps;
 }
 
 // list all available shows
