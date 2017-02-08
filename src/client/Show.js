@@ -1,5 +1,6 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
+import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
 
 class Show extends React.Component {
 
@@ -34,21 +35,35 @@ class Show extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<h1>{this.state.show.title}</h1>
-				<h3>{this.state.show.year}</h3>
-				<List>
-					{this.state.show.seasons.map(function(season) {
-						return (
-							<ListItem
-								key={season}
-								primaryText={'Season ' + season}
-								onTouchTap={() => this.handleSeasonTouchTap(season)}
-							/>
-						)
-					}.bind(this))}
-				</List>
-			</div>
+			<Card>
+				<CardMedia
+					overlay={
+						<CardTitle 
+							title={this.state.show.title}
+							subtitle={'First aired in ' + this.state.show.year} 
+						/>
+					}
+					style={{ cursor: 'pointer' }}
+				>
+					<img
+						src={'/static/media/' + this.state.show.id + '/cover.png'}
+						style={{ borderRadius: '2px 2px 0 0' }}
+					/>
+				</CardMedia>
+				<CardText>
+					<List>
+						{this.state.show.seasons.map(function(season) {
+							return (
+								<ListItem
+									key={season}
+									primaryText={'Season ' + season}
+									onTouchTap={() => this.handleSeasonTouchTap(season)}
+								/>
+							)
+						}.bind(this))}
+					</List>
+				</CardText>
+			</Card>
 		)
 	}
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
+import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
 
 class Show extends React.Component {
 
@@ -14,6 +15,7 @@ class Show extends React.Component {
 		this.getShowInfo = this.getShowInfo.bind(this);
 		this.getEpisodes = this.getEpisodes.bind(this);
 		this.handleEpisodeTouchTap = this.handleEpisodeTouchTap.bind(this);
+		this.goToShow = this.goToShow.bind(this);
 	}
 
 	componentDidMount() {
@@ -41,23 +43,43 @@ class Show extends React.Component {
 		window.location = '/stream/' + this.props.params.id + '/S' + this.props.params.season + '/' + episode;
 	}
 
+	goToShow() {
+		window.location = '/stream/' + this.props.params.id;
+	}
+
 	render() {
 		return (
-			<div>
-				<h1>{this.state.show.title}</h1>
-				<h3>{'Season ' + this.props.params.season}</h3>
-				<List>
-					{this.state.season.episodes.map(function(episode) {
-						return (
-							<ListItem
-								key={episode}
-								primaryText={'Episode ' + episode}
-								onTouchTap={() => this.handleEpisodeTouchTap(episode)}
-							/>
-						)
-					}.bind(this))}
-				</List>
-			</div>
+			<Card>
+				<CardMedia
+					overlay={
+						<CardTitle 
+							title={this.state.show.title}
+							subtitle={'First aired in ' + this.state.show.year} 
+						/>
+					}
+					onTouchTap={this.goToShow}
+					style={{ cursor: 'pointer' }}
+				>
+					<img
+						src={'/static/media/' + this.state.show.id + '/cover.png'}
+						style={{ borderRadius: '2px 2px 0 0' }}
+					/>
+				</CardMedia>
+				<CardTitle title={'Season ' + this.props.params.season} />
+				<CardText>
+					<List>
+						{this.state.season.episodes.map(function(episode) {
+							return (
+								<ListItem
+									key={episode}
+									primaryText={'Episode ' + episode}
+									onTouchTap={() => this.handleEpisodeTouchTap(episode)}
+								/>
+							)
+						}.bind(this))}
+					</List>
+				</CardText>
+			</Card>
 		)
 	}
 }
