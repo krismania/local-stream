@@ -62,7 +62,7 @@ class Show extends React.Component {
 				>
 					<img
 						src={'/static/media/' + this.state.show.id + '/cover.png'}
-						style={{ borderRadius: '2px 2px 0 0' }}
+						style={{ borderRadius: '2px 2px 0 0', minHeight: '300px', background: 'white' }}
 					/>
 				</CardMedia>
 				<CardTitle title={'Season ' + this.props.params.season} />
