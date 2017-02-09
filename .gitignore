@@ -1,0 +1,13 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node dependency directory
+node_modules
+
+# Webpack build directory
+build
+
+# Media directory
+static/media
