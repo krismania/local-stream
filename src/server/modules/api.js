@@ -16,6 +16,13 @@ function getShowInfo(id) {
 	return info;
 }
 
+function getSeasonInfo(id, season) {
+	var info = JSON.parse(fs.readFileSync('static/media/' + id + '/' + season + '/season.json'));
+	info.availableEpisodes = getSeasonEps(id, season);
+
+	return info;
+}
+
 function getSeasonEps(id, season) {
 	var eps = [];
 	var readDir = fs.readdirSync('static/media/' + id + '/' + season);
@@ -47,11 +54,10 @@ router.get('/shows/:id', function(req, res) {
 	res.json(getShowInfo(req.params.id));
 });
 
-// list episodes in show season
+// get season info
 router.get('/shows/:id/S:season', function(req, res) {
 	log('Request show: ' + req.params.id + ' season: ' + req.params.season);
-	var eps = { episodes: getSeasonEps(req.params.id, req.params.season) };
-	res.json(eps);
+	res.json(getSeasonInfo(req.params.id, req.params.season));
 });
 
 module.exports = router;

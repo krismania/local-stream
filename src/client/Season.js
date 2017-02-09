@@ -1,8 +1,10 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
+import Avatar from 'material-ui/Avatar';
+import {grey500} from 'material-ui/styles/colors';
 
-class Show extends React.Component {
+class Season extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -47,6 +49,18 @@ class Show extends React.Component {
 		window.location = '/stream/' + this.props.params.id;
 	}
 
+	episodeAvatar(number) {
+		var paddedNum = '' + (number >= 10 ? number : '0' + number);
+		return (
+			<Avatar
+				color={grey500}
+				style={{ background: 'none' }}
+			>
+				{paddedNum}
+			</Avatar>
+		);
+	}
+
 	render() {
 		return (
 			<Card>
@@ -65,15 +79,16 @@ class Show extends React.Component {
 						style={{ borderRadius: '2px 2px 0 0', minHeight: '300px', background: 'white' }}
 					/>
 				</CardMedia>
-				<CardTitle title={'Season ' + this.props.params.season} />
+				<CardTitle title={this.state.season.title} />
 				<CardText>
 					<List>
 						{this.state.season.episodes.map(function(episode) {
 							return (
 								<ListItem
-									key={episode}
-									primaryText={'Episode ' + episode}
-									onTouchTap={() => this.handleEpisodeTouchTap(episode)}
+									key={episode.num}
+									primaryText={episode.title}
+									leftAvatar={this.episodeAvatar(episode.num)}
+									onTouchTap={() => this.handleEpisodeTouchTap(episode.num)}
 								/>
 							)
 						}.bind(this))}
@@ -84,4 +99,4 @@ class Show extends React.Component {
 	}
 }
 
-export default Show;
+export default Season;
