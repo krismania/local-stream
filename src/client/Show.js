@@ -1,6 +1,8 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
+import Subheader from 'material-ui/Subheader';
+import NumberedAvatar from './NumberedAvatar';
 
 class Show extends React.Component {
 
@@ -52,12 +54,14 @@ class Show extends React.Component {
 				</CardMedia>
 				<CardText>
 					<List>
+						<Subheader>Seasons</Subheader>
 						{this.state.show.seasons.map(function(season) {
 							return (
 								<ListItem
-									key={season}
-									primaryText={'Season ' + season}
-									onTouchTap={() => this.handleSeasonTouchTap(season)}
+									key={season.num}
+									primaryText={season.title}
+									leftAvatar={NumberedAvatar(season.num)}
+									onTouchTap={() => this.handleSeasonTouchTap(season.num)}
 								/>
 							)
 						}.bind(this))}
