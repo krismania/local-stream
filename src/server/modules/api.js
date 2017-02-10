@@ -11,7 +11,13 @@ function getShowInfo(id) {
 	info.id = id;
 	// get array of season folders
 	// filter non-numbers (i.e. anything apart from numbered folders)
-	info.seasons = fs.readdirSync('static/media/' + id).filter(folder => !isNaN(folder));
+	var seasons = fs.readdirSync('static/media/' + id).filter(folder => !isNaN(folder));
+	// add each season's info
+	info.seasons = seasons.map(function(season) {
+		var seasonInfo = JSON.parse(fs.readFileSync('static/media/' + id + '/' + season + '/season.json'));
+		seasonInfo.num = season;
+		return seasonInfo;
+	});
 
 	return info;
 }
