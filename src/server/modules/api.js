@@ -6,24 +6,56 @@ router.get('/', function(req, res) {
 	res.send('Howdy');
 });
 
+function read(path) {
+	// reads and parses the json file at [path]
+	try {
+		var file = fs.readFileSync(path);
+		var json = JSON.parse(file);
+		return json;
+	} catch (e) {
+		if (e.code === 'ENOENT') {
+			return { err: 'File not found' };
+		} else if (e instanceof SyntaxError) {
+			return { err: 'Malformed JSON' };
+		} else {
+			throw e;
+		}
+	}
+}
+
 function getShowInfo(id) {
-	var info = JSON.parse(fs.readFileSync('static/media/' + id + '/info.json'));
+	var json = read('static/media/' + id + '/info.json');
+	var info = {};
+
+	// if there was an error reading, send the error
+	if (json.err) {
+		return json;
+	}
+
 	info.id = id;
+	info.title = json.title || '';
+	info.year = json.year || '?';
 	// get array of season folders
 	// filter non-numbers (i.e. anything apart from numbered folders)
 	var seasons = fs.readdirSync('static/media/' + id).filter(folder => !isNaN(folder));
 	// add each season's info
-	info.seasons = seasons.map(function(season) {
-		var seasonInfo = JSON.parse(fs.readFileSync('static/media/' + id + '/' + season + '/season.json'));
-		seasonInfo.num = season;
-		return seasonInfo;
-	});
+	info.seasons = seasons.map(season => getSeasonInfo(id, season));
 
 	return info;
 }
 
 function getSeasonInfo(id, season) {
-	var info = JSON.parse(fs.readFileSync('static/media/' + id + '/' + season + '/season.json'));
+	var json = read('static/media/' + id + '/' + season + '/season.json');
+	var info = {};
+	
+	// if there was an error reading, send the error
+	if (json.err) {
+		return json;
+	}
+
+	info.num = season;
+	info.title = json.title || 'Season ' + season;
+	info.episodes = json.episodes || [];
 	info.availableEpisodes = getSeasonEps(id, season);
 
 	return info;
