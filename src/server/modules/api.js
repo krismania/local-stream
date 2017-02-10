@@ -35,11 +35,21 @@ function getShowInfo(id) {
 	info.id = id;
 	info.title = json.title || '';
 	info.year = json.year || '?';
+
 	// get array of season folders
 	// filter non-numbers (i.e. anything apart from numbered folders)
 	var seasons = fs.readdirSync('static/media/' + id).filter(folder => !isNaN(folder));
 	// add each season's info
 	info.seasons = seasons.map(season => getSeasonInfo(id, season));
+
+	// check if the cover image exists
+	if (fs.existsSync('static/media/' + id + '/cover.png')) {
+		// if it does, send it's web path
+		info.cover = '/static/media/' + id + '/cover.png';
+	} else {
+		// otherwise, send null and handle client-side
+		info.cover = null;
+	}
 
 	return info;
 }
@@ -47,7 +57,7 @@ function getShowInfo(id) {
 function getSeasonInfo(id, season) {
 	var json = read('static/media/' + id + '/' + season + '/season.json');
 	var info = {};
-	
+
 	// if there was an error reading, send the error
 	if (json.err) {
 		return json;

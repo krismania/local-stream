@@ -63,7 +63,7 @@ class Season extends React.Component {
 					style={{ cursor: 'pointer' }}
 				>
 					<img
-						src={'/static/media/' + this.state.show.id + '/cover.png'}
+						src={this.state.show.cover ? this.state.show.cover : '/static/cover-default.png'}
 						style={{ borderRadius: '2px 2px 0 0', minHeight: '300px', background: 'white' }}
 					/>
 				</CardMedia>
