@@ -57,7 +57,7 @@ class Player extends React.Component {
 		return (
 			<div>
 				<Paper zDepth={3} style={{ marginBottom: '15px' }}>
-					<video style={videoStyle} src={vidPath + '.mp4'}>
+					<video controls style={videoStyle} src={vidPath + '.mp4'}>
 						<track
 							src={vidPath + '.vtt'}
 							kind="subtitles"
