@@ -1,14 +1,8 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
 import {Card, CardTitle, CardActions} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton'; 
+import FlatButton from 'material-ui/FlatButton';
 
-const videoStyle = {
-	display: 'block',
-	width: '100%',
-	backgroundColor: 'black',
-	borderRadius: '2px'
-}
+import Video from './Video';
 
 class Player extends React.Component {
 
@@ -76,17 +70,7 @@ class Player extends React.Component {
 		var subString = 'Season ' + this.props.params.season + ' \u00B7 Episode ' + this.props.params.episode + ' \u00B7 ' + this.state.show.title;
 		return (
 			<div>
-				<Paper zDepth={3} style={{ marginBottom: '15px' }}>
-					<video style={videoStyle} src={this.state.episode.src + '.mp4'}>
-						<track
-							src={this.state.episode.src + '.vtt'}
-							kind="subtitles"
-							srcLang="en"
-							label="English"
-							default
-						/>
-					</video>
-				</Paper>
+				<Video src={this.state.episode.src} />
 				<Card>
 					<CardTitle
 						title = {this.state.episode.title}
