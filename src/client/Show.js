@@ -1,6 +1,8 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
+import Subheader from 'material-ui/Subheader';
+import NumberedAvatar from './NumberedAvatar';
 
 class Show extends React.Component {
 
@@ -46,20 +48,25 @@ class Show extends React.Component {
 					style={{ cursor: 'pointer' }}
 				>
 					<img
-						src={'/static/media/' + this.state.show.id + '/cover.png'}
-						style={{ borderRadius: '2px 2px 0 0', minHeight: '300px', background: 'white' }}
+						src={this.state.show.cover ? this.state.show.cover : '/static/cover-default.png'}
+						style={{ borderRadius: '2px 2px 0 0', minHeight: '100px', background: 'white' }}
 					/>
 				</CardMedia>
 				<CardText>
 					<List>
+						<Subheader>Seasons</Subheader>
 						{this.state.show.seasons.map(function(season) {
-							return (
-								<ListItem
-									key={season}
-									primaryText={'Season ' + season}
-									onTouchTap={() => this.handleSeasonTouchTap(season)}
-								/>
-							)
+							// skip listing this item if there was an error
+							if (!season.err) {
+								return (
+									<ListItem
+										key={season.num}
+										primaryText={season.title}
+										leftAvatar={NumberedAvatar(season.num)}
+										onTouchTap={() => this.handleSeasonTouchTap(season.num)}
+									/>
+								)
+							}
 						}.bind(this))}
 					</List>
 				</CardText>

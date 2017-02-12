@@ -11,3 +11,6 @@ build
 
 # Media directory
 static/media
+
+# Environment variables
+.env

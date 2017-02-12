@@ -8,6 +8,13 @@ Next, build the react app and server with `npm run build-client` and `npm run bu
 
 To start the server, use `npm start`.
 
+#### Changing Port
+To run on a host/port other than the default, create a `.env` file in the root directory and specify the correct values:
+```
+host=10.0.0.42
+port=9000
+```
+
 ### Folder Structure
 ```
 │

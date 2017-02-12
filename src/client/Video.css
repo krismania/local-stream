@@ -1,0 +1,8 @@
+video::cue {
+	color: white;
+	background: none;
+	text-shadow:
+		black 0px 0px 2px,
+		black 0px 0px 2px,
+		black 0px 0px 4px;
+}

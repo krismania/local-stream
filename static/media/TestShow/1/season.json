@@ -1,0 +1,8 @@
+{
+	"title": "The First Season",
+	"episodes": [
+		{ "num": 1, "title": "The first episode" },
+		{ "num": 2, "title": "Episode 2: The episodening" },
+		{ "num": 5, "title": "Skipped the previous couple..\\/*_{} I guess?" }
+	]
+}

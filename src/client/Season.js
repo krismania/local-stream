@@ -1,8 +1,8 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
-import {grey500} from 'material-ui/styles/colors';
+import Subheader from 'material-ui/Subheader';
+import NumberedAvatar from './NumberedAvatar';
 
 class Season extends React.Component {
 
@@ -49,18 +49,6 @@ class Season extends React.Component {
 		window.location = '/stream/' + this.props.params.id;
 	}
 
-	episodeAvatar(number) {
-		var paddedNum = '' + (number >= 10 ? number : '0' + number);
-		return (
-			<Avatar
-				color={grey500}
-				style={{ background: 'none' }}
-			>
-				{paddedNum}
-			</Avatar>
-		);
-	}
-
 	render() {
 		return (
 			<Card>
@@ -75,19 +63,19 @@ class Season extends React.Component {
 					style={{ cursor: 'pointer' }}
 				>
 					<img
-						src={'/static/media/' + this.state.show.id + '/cover.png'}
-						style={{ borderRadius: '2px 2px 0 0', minHeight: '300px', background: 'white' }}
+						src={this.state.show.cover ? this.state.show.cover : '/static/cover-default.png'}
+						style={{ borderRadius: '2px 2px 0 0', minHeight: '100px', background: 'white' }}
 					/>
 				</CardMedia>
-				<CardTitle title={this.state.season.title} />
 				<CardText>
 					<List>
+						<Subheader>{this.state.season.title}</Subheader>
 						{this.state.season.episodes.map(function(episode) {
 							return (
 								<ListItem
 									key={episode.num}
 									primaryText={episode.title}
-									leftAvatar={this.episodeAvatar(episode.num)}
+									leftAvatar={NumberedAvatar(episode.num)}
 									onTouchTap={() => this.handleEpisodeTouchTap(episode.num)}
 								/>
 							)
