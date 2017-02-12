@@ -1,3 +1,5 @@
+require('dotenv').config() // set env variables
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
@@ -30,9 +32,9 @@ app.get('/', function(req, res) {
 })
 
 // start the server
-var server = app.listen(8080, '0.0.0.0', function() {
-	var host = server.address().address;
-	var port = server.address().port;
+var host = process.env.host || '0.0.0.0'
+var port = process.env.port || '8080'
 
+var server = app.listen(port, host, function() {
 	log('Listening at ' + host + ':' + port);
 });
