@@ -49,7 +49,7 @@ class Show extends React.Component {
 				>
 					<img
 						src={this.state.show.cover ? this.state.show.cover : '/static/cover-default.png'}
-						style={{ borderRadius: '2px 2px 0 0', minHeight: '300px', background: 'white' }}
+						style={{ borderRadius: '2px 2px 0 0', minHeight: '100px', background: 'white' }}
 					/>
 				</CardMedia>
 				<CardText>
