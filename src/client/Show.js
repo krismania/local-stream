@@ -56,14 +56,17 @@ class Show extends React.Component {
 					<List>
 						<Subheader>Seasons</Subheader>
 						{this.state.show.seasons.map(function(season) {
-							return (
-								<ListItem
-									key={season.num}
-									primaryText={season.title}
-									leftAvatar={NumberedAvatar(season.num)}
-									onTouchTap={() => this.handleSeasonTouchTap(season.num)}
-								/>
-							)
+							// skip listing this item if there was an error
+							if (!season.err) {
+								return (
+									<ListItem
+										key={season.num}
+										primaryText={season.title}
+										leftAvatar={NumberedAvatar(season.num)}
+										onTouchTap={() => this.handleSeasonTouchTap(season.num)}
+									/>
+								)
+							}
 						}.bind(this))}
 					</List>
 				</CardText>
