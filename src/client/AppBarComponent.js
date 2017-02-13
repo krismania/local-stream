@@ -3,17 +3,23 @@ import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
 import SvgIcon from 'material-ui/SvgIcon';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 import {Link} from 'react-router';
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { open: false }
+		this.state = {
+			open: false,
+			username: ''
+		}
 
 		this.handleOpen = this.handleOpen.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
+		this.handleNameChange = this.handleNameChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleOpen() {
@@ -26,7 +32,16 @@ class Login extends React.Component {
 
 	handleLogin() {
 		this.handleClose();
-		this.props.onLogin();
+		this.props.onLogin({ name: this.state.username });
+	}
+
+	handleNameChange(event) {
+		this.setState({ username: event.target.value });
+	}
+
+	handleSubmit(event) {
+		event.preventDefault;
+		this.handleLogin();
 	}
 
 	render() {
@@ -48,13 +63,19 @@ class Login extends React.Component {
 					style={{ marginTop: '6px' }}
 				/>
 				<Dialog
-					
 					title="Login"
 					open={this.state.open}
 					onRequestClose={this.handleClose}
 					actions={actions}
 				>
-					ayy lmao
+					<form onSubmit={this.handleSubmit}>
+						<TextField
+							autoFocus
+							value={this.state.username}
+							onChange={this.handleNameChange}
+							floatingLabelText="Username"
+						/>
+					</form>
 				</Dialog>
 			</div>
 		)

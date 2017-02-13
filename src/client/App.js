@@ -40,9 +40,16 @@ class App extends React.Component {
 		this.handleLogout = this.handleLogout.bind(this);
 	}
 
-	handleLogin() {
+	userValid(user) {
+		return true;
+	}
+
+	handleLogin(user) {
 		console.log('app-level login');
-		this.setState({ loggedIn: true, user: {name: 'krismania'} });
+		console.log(user.name);
+		if (this.userValid(user)) {
+			this.setState({ loggedIn: true, user: user });
+		}
 	}
 
 	handleLogout() {
