@@ -40,20 +40,29 @@ class App extends React.Component {
 		this.handleLogout = this.handleLogout.bind(this);
 	}
 
+	componentWillMount() {
+		// check if a username is stored already
+		var storedUsername = localStorage.getItem('username');
+		if (storedUsername) {
+			this.handleLogin({ name: storedUsername });
+		}
+	}
+
 	userValid(user) {
 		return true;
 	}
 
 	handleLogin(user) {
-		console.log('app-level login');
-		console.log(user.name);
 		if (this.userValid(user)) {
+			// save username in localstorage
+			localStorage.setItem('username', user.name);
 			this.setState({ loggedIn: true, user: user });
 		}
 	}
 
 	handleLogout() {
-		console.log('app-level logout');
+		// unset saved username
+		localStorage.removeItem('username');
 		this.setState({ loggedIn: false, user: null });
 	}
 
