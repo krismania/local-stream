@@ -77,7 +77,7 @@ class App extends React.Component {
 						user={this.state.user}
 					/>
 					<div className="container">
-						{this.props.children}
+						{React.cloneElement(this.props.children, { user: this.state.user })}
 					</div>
 				</div>
 			</MuiThemeProvider>
