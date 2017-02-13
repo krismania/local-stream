@@ -20,6 +20,7 @@ class Player extends React.Component {
 		this.getEpisodeInfo = this.getEpisodeInfo.bind(this);
 		this.handlePrev = this.handlePrev.bind(this);
 		this.handleNext = this.handleNext.bind(this);
+		this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
 	}
 
 	componentDidMount() {
@@ -66,11 +67,15 @@ class Player extends React.Component {
 		window.location = '/stream/' + this.state.show.id + '/S' + this.props.params.season + '/' + this.state.episode.next.num;
 	}
 
+	handleTimeUpdate(event) {
+		console.log(event.detail.percentage);
+	}
+
 	render() {
 		var subString = 'Season ' + this.props.params.season + ' \u00B7 Episode ' + this.props.params.episode + ' \u00B7 ' + this.state.show.title;
 		return (
 			<div>
-				<Video src={this.state.episode.src} />
+				<Video src={this.state.episode.src} onTimeUpdate={this.handleTimeUpdate} />
 				<Card>
 					<CardTitle
 						title = {this.state.episode.title}
