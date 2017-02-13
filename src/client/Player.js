@@ -12,7 +12,8 @@ class Player extends React.Component {
 		this.state = {
 			show: { title: '', year: '', seasons: [] },
 			season: { episodes: [] },
-			episode: { num: null, title: '', src: null, next: null, prev: null }
+			episode: { num: null, title: '', src: null, next: null, prev: null },
+			tracking: { watched: 0 }
 		}
 
 		this.getShowInfo = this.getShowInfo.bind(this);
@@ -68,7 +69,15 @@ class Player extends React.Component {
 	}
 
 	handleTimeUpdate(event) {
-		console.log(event.detail.percentage);
+		// floors percentage value to prevent excessive time updates
+		// for a ~23:00 episode, this will change every ~00:14
+		// it also means that for any episodes, the watched percentage will only
+		// update 100 times.
+		var percentage = parseInt(event.detail.percentage) / 100;
+		if (percentage !== this.state.tracking.watched) {
+			this.setState({ tracking: { watched: percentage } });
+			console.log('watched update: ' + percentage);
+		}
 	}
 
 	render() {
