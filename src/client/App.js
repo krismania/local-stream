@@ -28,11 +28,38 @@ const muiTheme = getMuiTheme({
 });
 
 class App extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state={
+			loggedIn: false,
+			user: null
+		}
+
+		this.handleLogin = this.handleLogin.bind(this);
+		this.handleLogout = this.handleLogout.bind(this);
+	}
+
+	handleLogin() {
+		console.log('app-level login');
+		this.setState({ loggedIn: true, user: {name: 'krismania'} });
+	}
+
+	handleLogout() {
+		console.log('app-level logout');
+		this.setState({ loggedIn: false, user: null });
+	}
+
 	render() {
 		return (
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<div>
-					<AppBarComponent />
+					<AppBarComponent
+						onLogin={this.handleLogin}
+						onLogout={this.handleLogout}
+						loggedIn={this.state.loggedIn}
+						user={this.state.user}
+					/>
 					<div className="container">
 						{this.props.children}
 					</div>
