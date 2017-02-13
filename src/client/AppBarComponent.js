@@ -6,6 +6,15 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Link} from 'react-router';
 
+const styles = {
+	loginLabel: {
+		marginRight: '8px',
+		color: 'rgba(255, 255, 255, 0.87)',
+		fontSize: '14px',
+		cursor: 'default'
+	}
+}
+
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -86,7 +95,7 @@ class Logout extends React.Component {
 	render() {
 		return (
 			<div>
-				<span style={{ marginRight: '8px' }}>{this.props.label}</span>
+				<span style={styles.loginLabel}>{this.props.label}</span>
 				<FlatButton
 					label="Logout"
 					hoverColor="rgba(255, 255, 255, 0.21)"
