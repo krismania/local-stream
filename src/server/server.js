@@ -25,6 +25,7 @@ app.use('/static', express.static('static'));
 // serve routes
 app.use('/stream', require('./modules/client'));
 app.use('/api', require('./modules/api'));
+app.use('/user', require('./modules/user'));
 
 // redirect '/' to '/stream'
 app.get('/', function(req, res) {
