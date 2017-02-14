@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
@@ -32,7 +33,7 @@ class Show extends React.Component {
 	}
 
 	handleSeasonTouchTap(season) {
-		window.location = '/stream/' + this.props.params.id + '/S' + season;
+		browserHistory.push('/stream/' + this.props.params.id + '/S' + season);
 	}
 
 	render() {

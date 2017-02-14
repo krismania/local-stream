@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
 
@@ -11,7 +12,7 @@ class ShowList extends React.Component {
 	}
 
 	handleShowTouchTap(name) {
-		window.location = '/stream/' + name;
+		browserHistory.push('/stream/' + name);
 	}
 
 	componentDidMount() {
