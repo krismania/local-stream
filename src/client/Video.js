@@ -70,7 +70,9 @@ const styles = {
 		boxSizing: 'border-box',
 		height: '48px',
 		padding: '12px 0',
-		alignItems: 'center'
+		alignItems: 'center',
+		userSelect: 'none',
+		cursor: 'default'
 	},
 	timeSpan: {
 		opacity: '0.87',
