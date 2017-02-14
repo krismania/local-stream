@@ -107,7 +107,11 @@ class Player extends React.Component {
 		var subString = 'Season ' + this.props.params.season + ' \u00B7 Episode ' + this.props.params.episode + ' \u00B7 ' + this.state.show.title;
 		return (
 			<div>
-				<Video src={this.state.episode.src} onTimeUpdate={this.handleTimeUpdate} />
+				<Video
+					key={Math.random()}
+					src={this.state.episode.src}
+					onTimeUpdate={this.handleTimeUpdate}
+				/>
 				<Card>
 					<CardTitle
 						title = {this.state.episode.title}
