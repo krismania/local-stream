@@ -10,10 +10,10 @@ class Player extends React.Component {
 		super(props);
 
 		this.state = {
-			show: { title: '', year: '', seasons: [] },
-			season: { episodes: [] },
+			show: { id: '', title: '', year: '', seasons: [] },
+			season: { num: null, title: '', episodes: [] },
 			episode: { num: null, title: '', src: null, next: null, prev: null },
-			tracking: { watched: 0 }
+			tracking: { percentage: 0 }
 		}
 
 		this.getShowInfo = this.getShowInfo.bind(this);
@@ -74,9 +74,25 @@ class Player extends React.Component {
 		// it also means that for any episodes, the watched percentage will only
 		// update 100 times.
 		var percentage = parseInt(event.detail.percentage) / 100;
-		if (percentage !== this.state.tracking.watched) {
-			this.setState({ tracking: { watched: percentage } });
+		if (percentage !== this.state.tracking.percentage) {
+			this.state.tracking.percentage = percentage;
 			console.log('watched update: ' + percentage);
+			// send to the server
+			var body = {
+				show: this.state.show.id,
+				season: this.state.season.num,
+				episode: this.state.episode.num,
+				percentage: percentage
+			};
+
+			fetch('/user/tracking/' + this.props.user.name, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			})
+			.then(res => console.log('response', res.ok));
 		}
 	}
 
