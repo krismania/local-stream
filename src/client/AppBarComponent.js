@@ -51,8 +51,8 @@ class Login extends React.Component {
 	}
 
 	handleSubmit(event) {
-		event.preventDefault;
 		this.handleLogin();
+		event.preventDefault();
 	}
 
 	render() {
