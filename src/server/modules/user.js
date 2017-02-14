@@ -35,7 +35,7 @@ router.post('/tracking/:name', function(req, res) {
 
 	show = req.body.show;
 	season = req.body.season;
-	episode = req.body.episode;
+	episode = parseInt(req.body.episode);
 	percentage = req.body.percentage;
 
 	// open user's file
@@ -51,8 +51,14 @@ router.post('/tracking/:name', function(req, res) {
 		if (!watched[show][season]) {
 			watched[show][season] = [];
 		}
+
 		// overwrite the old percentage for this episode
-		watched[show][season][episode] = percentage;
+		var epIndex = watched[show][season].findIndex(epObj => epObj.num === episode);
+		if (epIndex !== -1) {
+			watched[show][season][epIndex] = {num: episode, percentage: percentage}
+		} else {
+			watched[show][season].push({num: episode, percentage: percentage});
+		}
 
 		// write the file back
 		// JSON.stringify's 3rd arg generates nicer formatting
