@@ -24,6 +24,16 @@ p {
 	max-width: 960px;
 }
 
+/* chrome custom scrollbar */
+/*html::-webkit-scrollbar {
+  width: 5px;
+  float: right;
+}
+ 
+html::-webkit-scrollbar-thumb {
+  background: #303030; 
+}*/
+
 /* fix webkit autocomplete coloring */
 
 @-webkit-keyframes autofill {
