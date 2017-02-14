@@ -12,11 +12,13 @@ class Season extends React.Component {
 
 		this.state = {
 			show: { title: '', year: '', seasons: [] },
-			season: { episodes: [] }
+			season: { episodes: [] },
+			watched: null
 		};
 
 		this.getShowInfo = this.getShowInfo.bind(this);
 		this.getEpisodes = this.getEpisodes.bind(this);
+		this.getWatchedEpisodes = this.getWatchedEpisodes.bind(this);
 		this.handleEpisodeTouchTap = this.handleEpisodeTouchTap.bind(this);
 		this.goToShow = this.goToShow.bind(this);
 	}
@@ -28,6 +30,7 @@ class Season extends React.Component {
 
 	componentDidUpdate() {
 		document.title = this.state.show.title + ': S' + this.props.params.season + ' - Local Stream';
+		this.getWatchedEpisodes(); // run this incase the user changed
 	}
 
 	getShowInfo() {
@@ -40,6 +43,15 @@ class Season extends React.Component {
 		fetch('/api/shows/' + this.props.params.id + '/S' + this.props.params.season)
 		.then(res => res.json())
 		.then(res => this.setState({ season: res }));
+	}
+
+	getWatchedEpisodes() {
+		// if logged in, fetch episodes this user has watched
+		if (this.props.user && this.state.watched === null) {
+			fetch('/user/tracking/' + this.props.user.name + '/' + this.props.params.id + '/' + this.props.params.season)
+			.then(res => res.json())
+			.then(res => this.setState({ watched: res }));
+		}
 	}
 
 	handleEpisodeTouchTap(episode) {
@@ -72,10 +84,28 @@ class Season extends React.Component {
 					<List>
 						<Subheader>{this.state.season.title}</Subheader>
 						{this.state.season.episodes.map(function(episode) {
+							// if watched list is loaded, check it
+							if (this.state.watched) {
+								var watched = this.state.watched.find(item => item.num === episode.num);
+								var watchedText = watched ? ' [Watched ' + parseInt(watched.percentage*100) + '%]' : '';
+							}
+							// create primary text element
+							var primaryText = (
+								<div 
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between'
+									}}
+								>
+									<span>{episode.title}</span>
+									{this.state.watched ? <span>{watchedText}</span> : ''}
+								</div>
+							)
+
 							return (
 								<ListItem
 									key={episode.num}
-									primaryText={episode.title}
+									primaryText={primaryText}
 									leftAvatar={NumberedAvatar(episode.num)}
 									onTouchTap={() => this.handleEpisodeTouchTap(episode.num)}
 								/>

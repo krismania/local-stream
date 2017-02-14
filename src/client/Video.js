@@ -116,10 +116,17 @@ class Video extends React.Component {
 	}
 
 	handleVideoTimeUpdate() {
+		var percentage = (this.refs.video.currentTime/this.refs.video.duration) * 100;
+
 		this.setState({
 			currentTime: this.refs.video.currentTime,
-			currentPercentage: (this.refs.video.currentTime/this.refs.video.duration) * 100
+			currentPercentage: percentage
 		});
+		// also call the callback to inform the component above
+		if (percentage > 0) {
+			var event = new CustomEvent('timeUpdate', { detail: { percentage: percentage } });
+			this.props.onTimeUpdate(event);
+		}
 	}
 
 	handleVideoDurationChange() {
