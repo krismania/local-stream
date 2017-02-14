@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import {Card, CardTitle, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -26,12 +27,18 @@ class Player extends React.Component {
 
 	componentDidMount() {
 		this.getShowInfo();
-		this.getEpisodes();
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
 		document.title = this.state.show.title + ': S' + this.props.params.season + ', E' + this.props.params.episode + ' - Local Stream';
-		if (!this.state.episode.num) {
+		// check if show has changed
+		if(this.state.show !== prevState.show) {
+			// if it has, get the new show's episodes
+			this.getEpisodes();
+		}
+		// check if the current episode matches the URL param
+		if(parseInt(this.props.params.episode) !== this.state.episode.num) {
+			// if it doesn't, we need to fetch the new ep info
 			this.getEpisodeInfo();
 		}
 	}
@@ -61,11 +68,11 @@ class Player extends React.Component {
 	}
 
 	handlePrev() {
-		window.location = '/stream/' + this.state.show.id + '/S' + this.props.params.season + '/' + this.state.episode.prev.num;
+		browserHistory.push('/stream/' + this.state.show.id + '/S' + this.props.params.season + '/' + this.state.episode.prev.num);
 	}
 
 	handleNext() {
-		window.location = '/stream/' + this.state.show.id + '/S' + this.props.params.season + '/' + this.state.episode.next.num;
+		browserHistory.push('/stream/' + this.state.show.id + '/S' + this.props.params.season + '/' + this.state.episode.next.num);
 	}
 
 	handleTimeUpdate(event) {

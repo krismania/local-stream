@@ -6,6 +6,8 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Link} from 'react-router';
 
+import AppIcon from './AppIcon';
+
 const styles = {
 	loginLabel: {
 		marginRight: '8px',
@@ -109,18 +111,13 @@ class Logout extends React.Component {
 }
 
 const linkStyle = { textDecoration: 'none', color: 'white' }
-const icon = <path d="M12,3L2,12h3v8h14v-8h3L12,3z M12,18.14c-2.7,0-4.9-2.19-4.9-4.9c0-2.7,2.19-4.9,4.9-4.9s4.9,2.19,4.9,4.9 C16.9,15.95,14.7,18.14,12,18.14z M13.27,10.7h1.27v5.09h-1.27V10.7z M9.46,10.7l3.39,2.54l-3.39,2.54V10.7z" />;
 
 class AppBarComponent extends React.Component {
 	render() {
 		return (
 			<AppBar
 				title={<Link to="/stream" style={linkStyle}>LocalStream</Link>}
-				iconElementLeft={(
-					<SvgIcon style={{ width: '36px', height: '36px', paddingTop: '6px' }}>
-						{icon}
-					</SvgIcon>
-				)}
+				iconElementLeft={AppIcon}
 				iconElementRight={this.props.loggedIn ? <Logout label={'Hi, ' + this.props.user.name + '!'} onLogout={this.props.onLogout} /> : <Login onLogin={this.props.onLogin} />}
 			/>
 		);
