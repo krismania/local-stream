@@ -29,7 +29,7 @@ class Season extends React.Component {
 	}
 
 	componentDidUpdate() {
-		document.title = this.state.show.title + ': S' + this.props.params.season + ' - Local Stream';
+		document.title = 'Season ' + this.props.params.season + ' - ' + this.state.show.title + ' - LocalStream';
 		this.getWatchedEpisodes(); // run this incase the user changed
 	}
 

@@ -16,7 +16,7 @@ class ShowList extends React.Component {
 	}
 
 	componentDidMount() {
-		document.title = 'Shows - Local Stream';
+		document.title = 'Shows - LocalStream';
 	}
 
 	render() {

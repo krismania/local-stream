@@ -30,7 +30,7 @@ class Player extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		document.title = this.state.show.title + ': S' + this.props.params.season + ', E' + this.props.params.episode + ' - Local Stream';
+		document.title = 'Season ' + this.props.params.season + ', Episode ' + this.props.params.episode + ' - ' + this.state.show.title + ' - LocalStream';
 		// check if show has changed
 		if(this.state.show !== prevState.show) {
 			// if it has, get the new show's episodes

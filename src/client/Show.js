@@ -23,7 +23,7 @@ class Show extends React.Component {
 	}
 
 	componentDidUpdate() {
-		document.title = this.state.show.title + ' - Local Stream';
+		document.title = this.state.show.title + ' - LocalStream';
 	}
 
 	getShowInfo() {
