@@ -36,6 +36,7 @@ class App extends React.Component {
 			user: null
 		}
 
+		this.validateUser = this.validateUser.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleLogout = this.handleLogout.bind(this);
 	}
@@ -48,16 +49,34 @@ class App extends React.Component {
 		}
 	}
 
-	userValid(user) {
-		return true;
+	validateUser(user, callback) {
+		// authenticate user with server
+		fetch('/user/authenticate',
+		{
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ name: user.name })
+		})
+		.then(res => res.json())
+		.then(json => callback(json.authenticated));
 	}
 
 	handleLogin(user) {
-		if (this.userValid(user)) {
-			// save username in localstorage
-			localStorage.setItem('username', user.name);
-			this.setState({ loggedIn: true, user: user });
-		}
+		this.validateUser(user, (valid) => {
+			console.log('authenticated: ' + valid);
+			if (valid) {
+				// save username in localstorage
+				localStorage.setItem('username', user.name);
+				this.setState({ loggedIn: true, user: user });
+			} else {
+				// clear invalid login info
+				alert('Bad username. Check that you\'ve created this account.');
+				this.handleLogout();
+			}
+		});
 	}
 
 	handleLogout() {
