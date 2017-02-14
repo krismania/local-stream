@@ -69,4 +69,15 @@ router.post('/tracking/:name', function(req, res) {
 	});
 });
 
+router.get('/tracking/:name/:showId/:season', function(req, res) {
+	log('Request watched for: ' + req.params.name + ' [' + req.params.showId + ' s' + req.params.season + ']');
+
+	var watchedPath = 'static/users/' + req.params.name + '/watched.json';
+	fs.readFile(watchedPath, (err, data) => {
+		var watched = JSON.parse(data);
+		// send watched array as is
+		res.json(watched[req.params.showId][req.params.season])
+	});
+});
+
 module.exports = router;
