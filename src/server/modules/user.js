@@ -49,7 +49,7 @@ router.post('/tracking/:name', function(req, res) {
 			watched[show] = {};
 		}
 		if (!watched[show][season]) {
-			watched[show][season] = {};
+			watched[show][season] = [];
 		}
 		// overwrite the old percentage for this episode
 		watched[show][season][episode] = percentage;
