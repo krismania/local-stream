@@ -37,16 +37,19 @@ port=9000
 └─┬ static
   │ Express serves static content from here
   │
-  └─┬ media
-    │ Episodes live here, sorted in folders by show ID
-    │
-    └─┬ [showId]
-      │ contains show's info.json, and cover.png, as well as
-      │ folders for each of the show's seasons
-      │
-      └── [seasonNum]
-          contains season.json, as well as .mp4 and .vtt files for each
-          episode. files are named by episode number, e.g. 13.mp4 and 13.vtt
+  ├─┬ media
+  │ │ Episodes live here, sorted in folders by show ID
+  │ │
+  │ └─┬ [showId]
+  │   │ contains show's info.json, and cover.png, as well as
+  │   │ folders for each of the show's seasons
+  │   │
+  │   └── [seasonNum]
+  │       contains season.json, as well as .mp4 and .vtt files for each
+  │       episode. files are named by episode number, e.g. 13.mp4 and 13.vtt
+  │
+  └── users
+      Each user has a folder which holds their watched list
 ```
 
 ### Serving Shows
