@@ -28,9 +28,13 @@ class Season extends React.Component {
 		this.getEpisodes();
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
 		document.title = 'Season ' + this.props.params.season + ' - ' + this.state.show.title + ' - LocalStream';
-		this.getWatchedEpisodes(); // run this incase the user changed
+		// check if the user's changed or if there's no watch array set
+		if (this.props.user !== prevProps.user || !this.state.watched) {
+			// if it has, we should update the watched episodes
+			this.getWatchedEpisodes();
+		}
 	}
 
 	getShowInfo() {
@@ -47,10 +51,15 @@ class Season extends React.Component {
 
 	getWatchedEpisodes() {
 		// if logged in, fetch episodes this user has watched
-		if (this.props.user && this.state.watched === null) {
+		if (this.props.user) {
+			// init the array (so that this function isn't called again before the fetch completes)
+			this.state.watched = [];
 			fetch('/user/tracking/' + this.props.user.name + '/' + this.props.params.id + '/' + this.props.params.season)
 			.then(res => res.json())
 			.then(res => this.setState({ watched: res }));
+		} else {
+			// otherwise, set watched back to an empty array
+			this.setState({ watched: [] });
 		}
 	}
 
