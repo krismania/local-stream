@@ -85,6 +85,7 @@ class Login extends React.Component {
 							value={this.state.username}
 							onChange={this.handleNameChange}
 							floatingLabelText="Username"
+							style={{ maxWidth: '100%' }}
 						/>
 					</form>
 				</Dialog>
