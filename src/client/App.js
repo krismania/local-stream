@@ -32,7 +32,6 @@ class App extends React.Component {
 		super(props);
 
 		this.state={
-			loggedIn: false,
 			user: null
 		}
 
@@ -70,7 +69,7 @@ class App extends React.Component {
 			if (valid) {
 				// save username in localstorage
 				localStorage.setItem('username', user.name);
-				this.setState({ loggedIn: true, user: user });
+				this.setState({ user: user });
 			} else {
 				// clear invalid login info
 				alert('Bad username. Check that you\'ve created this account.');
@@ -82,7 +81,7 @@ class App extends React.Component {
 	handleLogout() {
 		// unset saved username
 		localStorage.removeItem('username');
-		this.setState({ loggedIn: false, user: null });
+		this.setState({ user: null });
 	}
 
 	render() {
@@ -92,7 +91,6 @@ class App extends React.Component {
 					<AppBarComponent
 						onLogin={this.handleLogin}
 						onLogout={this.handleLogout}
-						loggedIn={this.state.loggedIn}
 						user={this.state.user}
 					/>
 					<div className="container">

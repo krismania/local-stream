@@ -118,7 +118,7 @@ class AppBarComponent extends React.Component {
 			<AppBar
 				title={<Link to="/stream" style={linkStyle}>LocalStream</Link>}
 				iconElementLeft={AppIcon}
-				iconElementRight={this.props.loggedIn ? <Logout label={'Hi, ' + this.props.user.name + '!'} onLogout={this.props.onLogout} /> : <Login onLogin={this.props.onLogin} />}
+				iconElementRight={this.props.user ? <Logout label={'Hi, ' + this.props.user.name + '!'} onLogout={this.props.onLogout} /> : <Login onLogin={this.props.onLogin} />}
 			/>
 		);
 	}
