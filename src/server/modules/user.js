@@ -75,8 +75,13 @@ router.get('/tracking/:name/:showId/:season', function(req, res) {
 	var watchedPath = 'static/users/' + req.params.name + '/watched.json';
 	fs.readFile(watchedPath, (err, data) => {
 		var watched = JSON.parse(data);
-		// send watched array as is
-		res.json(watched[req.params.showId][req.params.season])
+		// if show is there, send watched array as is
+		if (watched[req.params.showId]) {
+			res.json(watched[req.params.showId][req.params.season]);
+		} else {
+			// otherwise, send an empty array
+			res.json([]);
+		}
 	});
 });
 
