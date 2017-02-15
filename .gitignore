@@ -9,8 +9,9 @@ node_modules
 # Webpack build directory
 build
 
-# Media directory
+# Media/users directory
 static/media
+static/users
 
 # Environment variables
 .env

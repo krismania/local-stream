@@ -16,16 +16,23 @@ const styles = {
 	paper: {
 		marginBottom: '8px',
 		overflow: 'hidden',
-		position: 'relative'
+		position: 'relative',
+		paddingBottom: '56.25%'
 	},
 	container: {
+		position: 'absolute',
 		backgroundColor: 'black',
 		width: '100%',
-		height: '100%'
+		height: '100%',
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0
 	},
 	video: {
 		display: 'block',
 		width: '100%',
+		height: '100%',
 		borderRadius: '2px'
 	},
 	controls: {
@@ -63,7 +70,9 @@ const styles = {
 		boxSizing: 'border-box',
 		height: '48px',
 		padding: '12px 0',
-		alignItems: 'center'
+		alignItems: 'center',
+		userSelect: 'none',
+		cursor: 'default'
 	},
 	timeSpan: {
 		opacity: '0.87',
@@ -116,10 +125,17 @@ class Video extends React.Component {
 	}
 
 	handleVideoTimeUpdate() {
+		var percentage = (this.refs.video.currentTime/this.refs.video.duration) * 100;
+
 		this.setState({
 			currentTime: this.refs.video.currentTime,
-			currentPercentage: (this.refs.video.currentTime/this.refs.video.duration) * 100
+			currentPercentage: percentage
 		});
+		// also call the callback to inform the component above
+		if (percentage > 0) {
+			var event = new CustomEvent('timeUpdate', { detail: { percentage: percentage } });
+			this.props.onTimeUpdate(event);
+		}
 	}
 
 	handleVideoDurationChange() {

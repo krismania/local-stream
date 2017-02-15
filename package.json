@@ -1,12 +1,13 @@
 {
   "name": "local-stream",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "Stream stuff locally",
   "main": "server.js",
   "scripts": {
-    "build-client": "webpack --config webpack.config.js",
-    "build-client-watch": "webpack --config webpack.config.js --watch",
-    "build-server": "babel --presets=es2015,react src/server -d build",
+    "build": "scripts/build.sh",
+    "build-client": "scripts/build-client.sh",
+    "build-server": "scripts/build-server.sh",
+    "build-client-watch": "scripts/build-client.sh -w",
     "start": "node build/server.js"
   },
   "repository": {

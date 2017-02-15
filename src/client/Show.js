@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import {List, ListItem} from 'material-ui/List';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
@@ -9,7 +10,7 @@ class Show extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { 
+		this.state = {
 			show: { title: '', year: '', seasons: [] }
 		};
 
@@ -22,7 +23,7 @@ class Show extends React.Component {
 	}
 
 	componentDidUpdate() {
-		document.title = this.state.show.title + ' - Local Stream';
+		document.title = this.state.show.title + ' - LocalStream';
 	}
 
 	getShowInfo() {
@@ -32,7 +33,7 @@ class Show extends React.Component {
 	}
 
 	handleSeasonTouchTap(season) {
-		window.location = '/stream/' + this.props.params.id + '/S' + season;
+		browserHistory.push('/stream/' + this.props.params.id + '/S' + season);
 	}
 
 	render() {
@@ -40,9 +41,9 @@ class Show extends React.Component {
 			<Card>
 				<CardMedia
 					overlay={
-						<CardTitle 
+						<CardTitle
 							title={this.state.show.title}
-							subtitle={'First aired in ' + this.state.show.year} 
+							subtitle={'First aired in ' + this.state.show.year}
 						/>
 					}
 					style={{ cursor: 'pointer' }}
