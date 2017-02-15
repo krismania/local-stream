@@ -29,9 +29,9 @@ p {
   width: 5px;
   float: right;
 }
- 
+
 html::-webkit-scrollbar-thumb {
-  background: #303030; 
+  background: #303030;
 }*/
 
 /* fix webkit autocomplete coloring */

@@ -10,7 +10,7 @@ class Show extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { 
+		this.state = {
 			show: { title: '', year: '', seasons: [] }
 		};
 
@@ -41,9 +41,9 @@ class Show extends React.Component {
 			<Card>
 				<CardMedia
 					overlay={
-						<CardTitle 
+						<CardTitle
 							title={this.state.show.title}
-							subtitle={'First aired in ' + this.state.show.year} 
+							subtitle={'First aired in ' + this.state.show.year}
 						/>
 					}
 					style={{ cursor: 'pointer' }}

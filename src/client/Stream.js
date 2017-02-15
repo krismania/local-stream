@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import ShowList from './ShowList';
 
 class Stream extends React.Component {
-	
+
 	constructor(props) {
 		super(props);
 

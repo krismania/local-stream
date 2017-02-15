@@ -76,9 +76,9 @@ class Season extends React.Component {
 			<Card>
 				<CardMedia
 					overlay={
-						<CardTitle 
+						<CardTitle
 							title={this.state.show.title}
-							subtitle={'First aired in ' + this.state.show.year} 
+							subtitle={'First aired in ' + this.state.show.year}
 						/>
 					}
 					onTouchTap={this.goToShow}
@@ -100,7 +100,7 @@ class Season extends React.Component {
 							}
 							// create primary text element
 							var primaryText = (
-								<div 
+								<div
 									style={{
 										display: 'flex',
 										justifyContent: 'space-between'
