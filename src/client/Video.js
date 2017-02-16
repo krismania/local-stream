@@ -272,7 +272,6 @@ class Video extends React.Component {
 						</div>
 						<div style={styles.buttonsRight}>
 							<IconButton onTouchTap={this.toggleMute}>
-								{console.log(this.state.muted)}
 								{this.state.muted ? <VolumeOff/> : <VolumeUp/>}
 							}
 							</IconButton>
