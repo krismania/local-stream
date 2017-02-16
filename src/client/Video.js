@@ -9,6 +9,8 @@ import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
 import Pause from 'material-ui/svg-icons/av/pause';
 import Fullscreen from 'material-ui/svg-icons/navigation/fullscreen';
 import FullscreenExit from 'material-ui/svg-icons/navigation/fullscreen-exit';
+import VolumeUp from 'material-ui/svg-icons/av/volume-up';
+import VolumeOff from 'material-ui/svg-icons/av/volume-off';
 
 import './Video.css';
 
@@ -89,6 +91,7 @@ class Video extends React.Component {
 
 		this.state = {
 			paused: true,
+			muted: false,
 			fullscreen: false,
 			currentPercentage: 0,
 			currentTime: 0,
@@ -102,6 +105,7 @@ class Video extends React.Component {
 		this.handleFullscreenChange = this.handleFullscreenChange.bind(this);
 		this.playOrPause = this.playOrPause.bind(this);
 		this.seek = this.seek.bind(this);
+		this.toggleMute = this.toggleMute.bind(this);
 		this.toggleFullscreen = this.toggleFullscreen.bind(this);
 		this.hideControls = this.hideControls.bind(this);
 		this.showControls = this.showControls.bind(this);
@@ -160,6 +164,17 @@ class Video extends React.Component {
 		var newTime = this.refs.video.duration * (newPercentage/100);
 		this.setState({ currentTime: newTime });
 		this.refs.video.currentTime = newTime;
+	}
+
+	toggleMute() {
+		console.log('toggle mute');
+		if (this.refs.video.muted) {
+			this.refs.video.muted = false;
+			this.setState({ muted: false });
+		} else {
+			this.refs.video.muted = true;
+			this.setState({ muted: true });
+		}
 	}
 
 	toggleFullscreen() {
@@ -256,6 +271,11 @@ class Video extends React.Component {
 							</div>
 						</div>
 						<div style={styles.buttonsRight}>
+							<IconButton onTouchTap={this.toggleMute}>
+								{console.log(this.state.muted)}
+								{this.state.muted ? <VolumeOff/> : <VolumeUp/>}
+							}
+							</IconButton>
 							<IconButton onTouchTap={this.toggleFullscreen}>
 								{this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
 							</IconButton>
