@@ -11,6 +11,10 @@ import Fullscreen from 'material-ui/svg-icons/navigation/fullscreen';
 import FullscreenExit from 'material-ui/svg-icons/navigation/fullscreen-exit';
 import VolumeUp from 'material-ui/svg-icons/av/volume-up';
 import VolumeOff from 'material-ui/svg-icons/av/volume-off';
+import Cast from 'material-ui/svg-icons/hardware/cast';
+import CastConnected from 'material-ui/svg-icons/hardware/cast-connected';
+
+import Chromecast from './Chromecast';
 
 import './Video.css';
 
@@ -93,6 +97,7 @@ class Video extends React.Component {
 			paused: true,
 			muted: false,
 			fullscreen: false,
+			casting: false,
 			currentPercentage: 0,
 			currentTime: 0,
 			duration: 0
@@ -109,10 +114,17 @@ class Video extends React.Component {
 		this.toggleFullscreen = this.toggleFullscreen.bind(this);
 		this.hideControls = this.hideControls.bind(this);
 		this.showControls = this.showControls.bind(this);
+		this.handleCastConnect = this.handleCastConnect.bind(this);
+		this.handleCastDisconnect = this.handleCastDisconnect.bind(this);
 	}
 
 	componentWillMount() {
 		document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, false);
+		// chromecast initialization
+		window['__onGCastApiAvailable'] = Chromecast.init;
+		// also set chromecast event handlers
+		Chromecast.addEventListener('connect', this.handleCastConnect);
+		Chromecast.addEventListener('disconnect', this.handleCastDisconnect);
 	}
 
 	componentWillUnmount() {
@@ -210,6 +222,15 @@ class Video extends React.Component {
 		controlsTimeout = window.setTimeout(() => {this.hideControls()}, 3000);
 	}
 
+	// chromecast
+	handleCastConnect() {
+		this.setState({ casting: true });
+	}
+
+	handleCastDisconnect() {
+		this.setState({ casting: false });
+	}
+
 	// helpers
 	timeFormat(time) {
 		var minutes = parseInt(time / 60);
@@ -236,6 +257,8 @@ class Video extends React.Component {
 						onPlaying={this.handleVideoPlaying}
 						onTimeUpdate={this.handleVideoTimeUpdate}
 						onDurationChange={this.handleVideoDurationChange}
+
+						onClick={() => { Chromecast.requestSession() }}
 					>
 						<track
 							src={this.props.src + '.vtt'}
@@ -274,6 +297,9 @@ class Video extends React.Component {
 							<IconButton onTouchTap={this.toggleMute}>
 								{this.state.muted ? <VolumeOff/> : <VolumeUp/>}
 							}
+							</IconButton>
+							<IconButton onTouchTap={Chromecast.requestSession}>
+								{this.state.casting ? <CastConnected/> : <Cast/>}
 							</IconButton>
 							<IconButton onTouchTap={this.toggleFullscreen}>
 								{this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}
