@@ -30,6 +30,7 @@ class Video extends React.Component {
 			muted: false,
 			fullscreen: false,
 			casting: false,
+			castName: '',
 			currentPercentage: 0,
 			currentTime: 0,
 			duration: 0
@@ -38,6 +39,7 @@ class Video extends React.Component {
 		this.handleVideoPause = this.handleVideoPause.bind(this);
 		this.handleVideoPlaying = this.handleVideoPlaying.bind(this);
 		this.handleVideoTimeUpdate = this.handleVideoTimeUpdate.bind(this);
+		this.handleCastTimeUpdate = this.handleCastTimeUpdate.bind(this);
 		this.handleVideoDurationChange = this.handleVideoDurationChange.bind(this);
 		this.handleFullscreenChange = this.handleFullscreenChange.bind(this);
 		this.playOrPause = this.playOrPause.bind(this);
@@ -57,6 +59,9 @@ class Video extends React.Component {
 		// also set chromecast event handlers
 		Chromecast.addEventListener('connect', this.handleCastConnect);
 		Chromecast.addEventListener('disconnect', this.handleCastDisconnect);
+		Chromecast.addEventListener('pause', this.handleVideoPause);
+		Chromecast.addEventListener('play', this.handleVideoPlaying);
+		Chromecast.addEventListener('timeUpdate', this.handleCastTimeUpdate);
 	}
 
 	componentWillUnmount() {
@@ -86,6 +91,15 @@ class Video extends React.Component {
 		}
 	}
 
+	handleCastTimeUpdate(currentTime) {
+		var percentage = (currentTime/this.refs.video.duration) * 100;
+
+		this.setState({
+			currentTime: currentTime,
+			currentPercentage: percentage
+		});
+	}
+
 	handleVideoDurationChange() {
 		this.setState({ duration: this.refs.video.duration });
 	}
@@ -96,10 +110,18 @@ class Video extends React.Component {
 
 	// control video
 	playOrPause() {
-		if (this.refs.video.paused) {
-			this.refs.video.play();
+		if (this.state.casting) {
+			if (!Chromecast.mediaLoaded()) {
+				Chromecast.cast(this.refs.video.src);
+			} else {
+				Chromecast.playOrPause();
+			}
 		} else {
-			this.refs.video.pause();
+			if (this.refs.video.paused) {
+				this.refs.video.play();
+			} else {
+				this.refs.video.pause();
+			}
 		}
 	}
 
@@ -133,7 +155,7 @@ class Video extends React.Component {
 
 	// show/hide controls
 	hideControls() {
-		if (!this.state.paused) {
+		if (!this.state.paused && !this.state.casting) {
 			this.refs.controls.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
 			this.refs.controls.style.transform = 'translateY(100%)';
 			this.refs.controls.style.opacity = '0';
@@ -155,12 +177,15 @@ class Video extends React.Component {
 	}
 
 	// chromecast
-	handleCastConnect() {
-		this.setState({ casting: true });
+	handleCastConnect(castName) {
+		this.setState({ casting: true, castName: castName });
+		if (!Chromecast.mediaLoaded()) {
+			Chromecast.cast(this.refs.video.src);
+		}
 	}
 
 	handleCastDisconnect() {
-		this.setState({ casting: false });
+		this.setState({ casting: false, castName: '' });
 	}
 
 	// helpers
@@ -188,8 +213,6 @@ class Video extends React.Component {
 						onPlaying={this.handleVideoPlaying}
 						onTimeUpdate={this.handleVideoTimeUpdate}
 						onDurationChange={this.handleVideoDurationChange}
-
-						onClick={() => { Chromecast.requestSession() }}
 					>
 						<track
 							src={this.props.src + '.vtt'}
