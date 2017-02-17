@@ -111,6 +111,7 @@ class Player extends React.Component {
 					key={Math.random()}
 					src={this.state.episode.src}
 					onTimeUpdate={this.handleTimeUpdate}
+					chromecast={this.props.chromecast}
 				/>
 				<Card>
 					<CardTitle

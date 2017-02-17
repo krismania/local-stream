@@ -113,4 +113,4 @@ class Chromecast {
 	}
 }
 
-export default new Chromecast();
+export default Chromecast;

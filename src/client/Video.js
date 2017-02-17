@@ -14,11 +14,9 @@ import VolumeOff from 'material-ui/svg-icons/av/volume-off';
 import Cast from 'material-ui/svg-icons/hardware/cast';
 import CastConnected from 'material-ui/svg-icons/hardware/cast-connected';
 
-import Chromecast from './Chromecast';
-
 import './Video.css';
 
-var controlsTimeout;
+var controlsTimeout, chromecast;
 
 class Video extends React.Component {
 
@@ -35,6 +33,9 @@ class Video extends React.Component {
 			currentTime: 0,
 			duration: 0
 		};
+
+		// get the chromecast object
+		chromecast = this.props.chromecast;
 
 		this.handleVideoPause = this.handleVideoPause.bind(this);
 		this.handleVideoPlaying = this.handleVideoPlaying.bind(this);
@@ -55,13 +56,13 @@ class Video extends React.Component {
 	componentWillMount() {
 		document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, false);
 		// chromecast initialization
-		window['__onGCastApiAvailable'] = Chromecast.init;
+		window['__onGCastApiAvailable'] = chromecast.init;
 		// also set chromecast event handlers
-		Chromecast.addEventListener('connect', this.handleCastConnect);
-		Chromecast.addEventListener('disconnect', this.handleCastDisconnect);
-		Chromecast.addEventListener('pause', this.handleVideoPause);
-		Chromecast.addEventListener('play', this.handleVideoPlaying);
-		Chromecast.addEventListener('timeUpdate', this.handleCastTimeUpdate);
+		chromecast.addEventListener('connect', this.handleCastConnect);
+		chromecast.addEventListener('disconnect', this.handleCastDisconnect);
+		chromecast.addEventListener('pause', this.handleVideoPause);
+		chromecast.addEventListener('play', this.handleVideoPlaying);
+		chromecast.addEventListener('timeUpdate', this.handleCastTimeUpdate);
 	}
 
 	componentWillUnmount() {
@@ -111,10 +112,10 @@ class Video extends React.Component {
 	// control video
 	playOrPause() {
 		if (this.state.casting) {
-			if (!Chromecast.mediaLoaded()) {
-				Chromecast.cast(this.refs.video.src);
+			if (!chromecast.mediaLoaded()) {
+				chromecast.cast(this.refs.video.src);
 			} else {
-				Chromecast.playOrPause();
+				chromecast.playOrPause();
 			}
 		} else {
 			if (this.refs.video.paused) {
@@ -179,8 +180,8 @@ class Video extends React.Component {
 	// chromecast
 	handleCastConnect(castName) {
 		this.setState({ casting: true, castName: castName });
-		if (!Chromecast.mediaLoaded()) {
-			Chromecast.cast(this.refs.video.src);
+		if (!chromecast.mediaLoaded()) {
+			chromecast.cast(this.refs.video.src);
 		}
 	}
 
@@ -254,7 +255,7 @@ class Video extends React.Component {
 							<IconButton onTouchTap={this.toggleMute}>
 								{this.state.muted ? <VolumeOff/> : <VolumeUp/>}
 							</IconButton>
-							<IconButton onTouchTap={Chromecast.requestSession}>
+							<IconButton onTouchTap={chromecast.requestSession}>
 								{this.state.casting ? <CastConnected/> : <Cast/>}
 							</IconButton>
 							<IconButton onTouchTap={this.toggleFullscreen}>

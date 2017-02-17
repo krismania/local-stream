@@ -10,6 +10,7 @@ import {
 
 import './App.css';
 import AppBarComponent from './AppBarComponent';
+import Chromecast from './Chromecast';
 
 
 // create the material theme
@@ -27,12 +28,16 @@ const muiTheme = getMuiTheme({
 	}
 });
 
+// create chromecast instance
+const chromecast = new Chromecast();
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state={
-			user: null
+			user: null,
+			chromecast: chromecast
 		}
 
 		this.validateUser = this.validateUser.bind(this);
@@ -94,7 +99,7 @@ class App extends React.Component {
 						user={this.state.user}
 					/>
 					<div className="container">
-						{React.cloneElement(this.props.children, { user: this.state.user })}
+						{React.cloneElement(this.props.children, this.state)}
 					</div>
 				</div>
 			</MuiThemeProvider>
