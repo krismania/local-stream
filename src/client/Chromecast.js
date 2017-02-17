@@ -2,6 +2,12 @@ class Chromecast {
 
 	constructor() {
 		this.init = this.init.bind(this);
+		this.addEventListener = this.addEventListener.bind(this);
+		this.mediaLoaded = this.mediaLoaded.bind(this);
+		this.requestSession = this.requestSession.bind(this);
+		this.loadMedia = this.loadMedia.bind(this);
+		this.cast = this.cast.bind(this);
+		this.playOrPause = this.playOrPause.bind(this);
 	}
 
 	// default event listeners
