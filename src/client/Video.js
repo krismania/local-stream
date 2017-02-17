@@ -18,74 +18,6 @@ import Chromecast from './Chromecast';
 
 import './Video.css';
 
-const styles = {
-	paper: {
-		marginBottom: '8px',
-		overflow: 'hidden',
-		position: 'relative',
-		paddingBottom: '56.25%'
-	},
-	container: {
-		position: 'absolute',
-		backgroundColor: 'black',
-		width: '100%',
-		height: '100%',
-		top: 0,
-		right: 0,
-		bottom: 0,
-		left: 0
-	},
-	video: {
-		display: 'block',
-		width: '100%',
-		height: '100%',
-		borderRadius: '2px'
-	},
-	controls: {
-		position: 'absolute',
-		bottom: '0',
-		left: '0',
-		right: '0',
-		width: '100%',
-		backgroundColor: 'rgba(0, 0, 0, 0.5)',
-		borderRadius: '0 0 2px 2px'
-	},
-	scrubber: {
-		display: 'inline-block',
-		width: '100%',
-		marginBottom: '-10px',
-		padding: '0 16px',
-		boxSizing: 'border-box'
-	},
-	slider: {
-		margin: '0',
-		cursor: 'pointer'
-	},
-	buttonsLeft: {
-		display: 'inline-flex',
-		width: '50%',
-		justifyContent: 'flex-start'
-	},
-	buttonsRight: {
-		display: 'inline-flex',
-		width: '50%',
-		justifyContent: 'flex-end'
-	},
-	time: {
-		display: 'inline-flex',
-		boxSizing: 'border-box',
-		height: '48px',
-		padding: '12px 0',
-		alignItems: 'center',
-		userSelect: 'none',
-		cursor: 'default'
-	},
-	timeSpan: {
-		opacity: '0.87',
-		padding: '0 2px'
-	}
-};
-
 var controlsTimeout;
 
 class Video extends React.Component {
@@ -242,15 +174,14 @@ class Video extends React.Component {
 		return (
 			<Paper
 				zDepth={2}
-				style={styles.paper}
+				className="videoContainerOuter"
 				onMouseLeave={this.hideControls}
 				onMouseMove={this.showControls}
 			>
-				<div ref="container" style={styles.container}>
+				<div ref="container" className="videoContainer">
 					<video
 						ref="video"
 						preload="auto"
-						style={styles.video}
 						src={this.props.src + '.mp4'}
 						// events
 						onPause={this.handleVideoPause}
@@ -268,35 +199,37 @@ class Video extends React.Component {
 							default
 						/>
 					</video>
-					<div ref="controls" style={styles.controls}>
-						<div style={styles.scrubber}>
+					<div className={'overlay' + (this.state.casting ? ' visible' : '')}>
+						<span>Playing on {this.state.castName}</span>
+					</div>
+					<div ref="controls" className="controls">
+						<div className="scrubber">
 							<Slider
 								ref="scrubber"
 								disableFocusRipple={true}
 								max={100}
 								value={this.state.currentPercentage}
 								onChange={this.seek}
-								sliderStyle={styles.slider}
+								sliderStyle={{ margin: '0', cursor: 'pointer' }}
 							/>
 						</div>
-						<div style={styles.buttonsLeft}>
+						<div className="buttons left">
 							<IconButton onTouchTap={this.playOrPause}>
 								{this.state.paused ? <PlayArrow/> : <Pause/>}
 							</IconButton>
-							<div ref="time" style={styles.time}>
-								<span ref="currentTime" style={styles.timeSpan}>
+							<div ref="time" className="time">
+								<span ref="currentTime">
 									{this.timeFormat(this.state.currentTime)}
 								</span>
-								<span style={styles.timeSpan}>/</span>
-								<span ref="totalTime" style={styles.timeSpan}>
+								<span>/</span>
+								<span ref="totalTime">
 									{this.timeFormat(this.state.duration)}
 								</span>
 							</div>
 						</div>
-						<div style={styles.buttonsRight}>
+						<div className="buttons right">
 							<IconButton onTouchTap={this.toggleMute}>
 								{this.state.muted ? <VolumeOff/> : <VolumeUp/>}
-							}
 							</IconButton>
 							<IconButton onTouchTap={Chromecast.requestSession}>
 								{this.state.casting ? <CastConnected/> : <Cast/>}
