@@ -55,9 +55,7 @@ class Video extends React.Component {
 
 	componentWillMount() {
 		document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, false);
-		// chromecast initialization
-		window['__onGCastApiAvailable'] = chromecast.init;
-		// also set chromecast event handlers
+		// add chromecast event handlers
 		chromecast.addEventListener('connect', this.handleCastConnect);
 		chromecast.addEventListener('disconnect', this.handleCastDisconnect);
 		chromecast.addEventListener('pause', this.handleVideoPause);

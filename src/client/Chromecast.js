@@ -8,6 +8,9 @@ class Chromecast {
 		this.loadMedia = this.loadMedia.bind(this);
 		this.cast = this.cast.bind(this);
 		this.playOrPause = this.playOrPause.bind(this);
+
+		// bind init to GCast available
+		window['__onGCastApiAvailable'] = this.init;
 	}
 
 	// default event listeners
@@ -28,55 +31,58 @@ class Chromecast {
 	}
 
 	init(isAvailable) {
-		if (isAvailable) {
-			console.log('initializing Chromecast');
-			cast.framework.CastContext.getInstance().setOptions({
-				autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
-				receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
-			});
+		window.setTimeout(() => { // init function in a timeout due to race condition
+			// see https://code.google.com/p/google-cast-sdk/issues/detail?id=1072
+			if (isAvailable) {
+				console.log('initializing Chromecast');
+				cast.framework.CastContext.getInstance().setOptions({
+					autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+					receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
+				});
 
-			// set class variables
-			this.player = new cast.framework.RemotePlayer();
-			this.playerController = new cast.framework.RemotePlayerController(this.player);
+				// set class variables
+				this.player = new cast.framework.RemotePlayer();
+				this.playerController = new cast.framework.RemotePlayerController(this.player);
 
-			// add event listeners
-			this.playerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (event) => {
-				if (event.value) {
-					// if the event value is true, we have connected
-					this.onConnect(cast.framework.CastContext.getInstance().getCurrentSession().getSessionObj().receiver.friendlyName);
-				} else {
-					// else we have disconnected
-					this.onDisconnect();
-				}
-			});
+				// add event listeners
+				this.playerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (event) => {
+					if (event.value) {
+						// if the event value is true, we have connected
+						this.onConnect(cast.framework.CastContext.getInstance().getCurrentSession().getSessionObj().receiver.friendlyName);
+					} else {
+						// else we have disconnected
+						this.onDisconnect();
+					}
+				});
 
-			this.playerController.addEventListener(cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED, (event) => {
-				if (event.value === chrome.cast.media.PlayerState.PAUSED) {
-					this.onPause();
-				} else if (event.value === chrome.cast.media.PlayerState.PLAYING) {
-					this.onPlay();
-				}
-			});
+				this.playerController.addEventListener(cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED, (event) => {
+					if (event.value === chrome.cast.media.PlayerState.PAUSED) {
+						this.onPause();
+					} else if (event.value === chrome.cast.media.PlayerState.PLAYING) {
+						this.onPlay();
+					}
+				});
 
-			this.playerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, (event) => {
-				this.onTimeUpdate(event.value);
-			});
+				this.playerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, (event) => {
+					this.onTimeUpdate(event.value);
+				});
 
-			// for debug
-			this.playerController.addEventListener(cast.framework.RemotePlayerEventType.ANY_CHANGE, function(event) {
-				if (event.field !== 'currentTime') {
+				// for debug
+				this.playerController.addEventListener(cast.framework.RemotePlayerEventType.ANY_CHANGE, function(event) {
+					if (event.field !== 'currentTime') {
+						console.log(event);
+					}
+				});
+
+				cast.framework.CastContext.getInstance().addEventListener(cast.framework.CastContextEventType.CAST_STATE_CHANGED, function(event) {
 					console.log(event);
-				}
-			});
+				});
 
-			cast.framework.CastContext.getInstance().addEventListener(cast.framework.CastContextEventType.CAST_STATE_CHANGED, function(event) {
-				console.log(event);
-			});
-
-			cast.framework.CastContext.getInstance().addEventListener(cast.framework.CastContextEventType.SESSION_STATE_CHANGED, function(event) {
-				console.log(event);
-			});
-		}
+				cast.framework.CastContext.getInstance().addEventListener(cast.framework.CastContextEventType.SESSION_STATE_CHANGED, function(event) {
+					console.log(event);
+				});
+			}
+		}, 200);
 	}
 
 	mediaLoaded() {
