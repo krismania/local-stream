@@ -120,6 +120,7 @@ class App extends React.Component {
 					</div>
 					<CastControls
 						casting={this.state.casting}
+						chromecast={this.state.chromecast}
 					/>
 				</div>
 			</MuiThemeProvider>

@@ -9,6 +9,9 @@ class Chromecast {
 		this.cast = this.cast.bind(this);
 		this.playOrPause = this.playOrPause.bind(this);
 
+		// default values
+		this.duration = 0;
+
 		// bind init to GCast available
 		window['__onGCastApiAvailable'] = this.init;
 	}
@@ -65,6 +68,10 @@ class Chromecast {
 
 				this.playerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, (event) => {
 					this.onTimeUpdate(event.value);
+				});
+
+				this.playerController.addEventListener(cast.framework.RemotePlayerEventType.DURATION_CHANGED, (event) => {
+					this.duration = event.value;
 				});
 
 				// for debug

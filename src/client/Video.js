@@ -47,16 +47,10 @@ class Video extends React.Component {
 		this.toggleFullscreen = this.toggleFullscreen.bind(this);
 		this.hideControls = this.hideControls.bind(this);
 		this.showControls = this.showControls.bind(this);
-		this.handleCastConnect = this.handleCastConnect.bind(this);
-		this.handleCastDisconnect = this.handleCastDisconnect.bind(this);
 	}
 
 	componentWillMount() {
 		document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, false);
-		// add chromecast event handlers
-		chromecast.addEventListener('pause', this.handleVideoPause);
-		chromecast.addEventListener('play', this.handleVideoPlaying);
-		chromecast.addEventListener('timeUpdate', this.handleCastTimeUpdate);
 	}
 
 	componentWillUnmount() {
@@ -106,11 +100,7 @@ class Video extends React.Component {
 	// control video
 	playOrPause() {
 		if (this.props.casting) {
-			if (!chromecast.mediaLoaded()) {
-				chromecast.cast(this.refs.video.src);
-			} else {
-				chromecast.playOrPause();
-			}
+			chromecast.cast(this.refs.video.src);
 		} else {
 			if (this.refs.video.paused) {
 				this.refs.video.play();
@@ -169,18 +159,6 @@ class Video extends React.Component {
 		// set timeout to automatically hide controls when the mouse stops
 		window.clearTimeout(controlsTimeout); // clear the current timout first, to prevent wierdness
 		controlsTimeout = window.setTimeout(() => {this.hideControls()}, 3000);
-	}
-
-	// chromecast
-	handleCastConnect(castName) {
-		this.setState({ casting: true, castName: castName });
-		if (!chromecast.mediaLoaded()) {
-			chromecast.cast(this.refs.video.src);
-		}
-	}
-
-	handleCastDisconnect() {
-		this.setState({ casting: false, castName: '' });
 	}
 
 	// helpers
