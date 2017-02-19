@@ -27,8 +27,6 @@ class Video extends React.Component {
 			paused: true,
 			muted: false,
 			fullscreen: false,
-			casting: false,
-			castName: '',
 			currentPercentage: 0,
 			currentTime: 0,
 			duration: 0
@@ -56,8 +54,6 @@ class Video extends React.Component {
 	componentWillMount() {
 		document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, false);
 		// add chromecast event handlers
-		chromecast.addEventListener('connect', this.handleCastConnect);
-		chromecast.addEventListener('disconnect', this.handleCastDisconnect);
 		chromecast.addEventListener('pause', this.handleVideoPause);
 		chromecast.addEventListener('play', this.handleVideoPlaying);
 		chromecast.addEventListener('timeUpdate', this.handleCastTimeUpdate);
@@ -109,7 +105,7 @@ class Video extends React.Component {
 
 	// control video
 	playOrPause() {
-		if (this.state.casting) {
+		if (this.props.casting) {
 			if (!chromecast.mediaLoaded()) {
 				chromecast.cast(this.refs.video.src);
 			} else {
@@ -154,7 +150,7 @@ class Video extends React.Component {
 
 	// show/hide controls
 	hideControls() {
-		if (!this.state.paused && !this.state.casting) {
+		if (!this.state.paused && !this.props.casting) {
 			this.refs.controls.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
 			this.refs.controls.style.transform = 'translateY(100%)';
 			this.refs.controls.style.opacity = '0';
@@ -221,8 +217,8 @@ class Video extends React.Component {
 							default
 						/>
 					</video>
-					<div className={'overlay' + (this.state.casting ? ' visible' : '')}>
-						<span>Playing on {this.state.castName}</span>
+					<div className={'overlay' + (this.props.casting ? ' visible' : '')}>
+						<span>Playing on {this.props.castName}</span>
 					</div>
 					<div ref="controls" className="controls">
 						<div className="scrubber">
@@ -254,7 +250,7 @@ class Video extends React.Component {
 								{this.state.muted ? <VolumeOff/> : <VolumeUp/>}
 							</IconButton>
 							<IconButton onTouchTap={chromecast.requestSession}>
-								{this.state.casting ? <CastConnected/> : <Cast/>}
+								{this.props.casting ? <CastConnected/> : <Cast/>}
 							</IconButton>
 							<IconButton onTouchTap={this.toggleFullscreen}>
 								{this.state.fullscreen ? <FullscreenExit/> : <Fullscreen/>}

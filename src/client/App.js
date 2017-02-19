@@ -37,12 +37,16 @@ class App extends React.Component {
 
 		this.state={
 			user: null,
-			chromecast: chromecast
+			chromecast: chromecast,
+			casting: false,
+			castName: ''
 		}
 
 		this.validateUser = this.validateUser.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
 		this.handleLogout = this.handleLogout.bind(this);
+		this.handleCastConnect = this.handleCastConnect.bind(this);
+		this.handleCastDisconnect = this.handleCastDisconnect.bind(this);
 	}
 
 	componentWillMount() {
@@ -51,6 +55,18 @@ class App extends React.Component {
 		if (storedUsername) {
 			this.handleLogin({ name: storedUsername });
 		}
+
+		// add chromecast event listeners
+		chromecast.addEventListener('connect', this.handleCastConnect);
+		chromecast.addEventListener('disconnect', this.handleCastDisconnect);
+	}
+
+	handleCastConnect(castName) {
+		this.setState({ casting: true, castName: castName });
+	}
+
+	handleCastDisconnect() {
+		this.setState({ casting: false, castName: '' });
 	}
 
 	validateUser(user, callback) {

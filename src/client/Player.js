@@ -112,6 +112,8 @@ class Player extends React.Component {
 					src={this.state.episode.src}
 					onTimeUpdate={this.handleTimeUpdate}
 					chromecast={this.props.chromecast}
+					casting={this.props.casting}
+					castName={this.props.castName}
 				/>
 				<Card>
 					<CardTitle
