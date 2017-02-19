@@ -10,6 +10,7 @@ import {
 
 import './App.css';
 import AppBarComponent from './AppBarComponent';
+import CastControls from './CastControls';
 import Chromecast from './Chromecast';
 
 
@@ -117,6 +118,9 @@ class App extends React.Component {
 					<div className="container">
 						{React.cloneElement(this.props.children, this.state)}
 					</div>
+					<CastControls
+						casting={this.state.casting}
+					/>
 				</div>
 			</MuiThemeProvider>
 		);
