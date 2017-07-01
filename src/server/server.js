@@ -38,4 +38,9 @@ var port = process.env.port || '8080'
 
 var server = app.listen(port, host, function() {
 	log('Listening at ' + host + ':' + port);
+})
+.on('error', function(err) {
+	if (err.errno === 'EADDRINUSE') {
+		log('Error: ' + host + ':' + port + ' is in use');
+	}
 });
