@@ -13,12 +13,14 @@ class Player extends React.Component {
 		this.state = {
 			show: { id: '', title: '', year: '', seasons: [] },
 			season: { num: null, title: '', episodes: [] },
+			watched: null,
 			episode: { num: null, title: '', src: null, next: null, prev: null },
 			tracking: { percentage: 0 }
 		}
 
 		this.getShowInfo = this.getShowInfo.bind(this);
 		this.getEpisodes = this.getEpisodes.bind(this);
+		this.getWatchedEpisodes = this.getWatchedEpisodes.bind(this);
 		this.getEpisodeInfo = this.getEpisodeInfo.bind(this);
 		this.handlePrev = this.handlePrev.bind(this);
 		this.handleNext = this.handleNext.bind(this);
@@ -40,6 +42,12 @@ class Player extends React.Component {
 		if(parseInt(this.props.params.episode) !== this.state.episode.num) {
 			// if it doesn't, we need to fetch the new ep info
 			this.getEpisodeInfo();
+			this.getWatchedEpisodes();
+		}
+		// check if the user's changed or if there's no watch array set
+		if (this.props.user !== prevProps.user || !this.state.watched) {
+			// if it has, we should update the watched episodes
+			this.getWatchedEpisodes();
 		}
 	}
 
@@ -53,6 +61,34 @@ class Player extends React.Component {
 		fetch('/api/shows/' + this.props.params.id + '/S' + this.props.params.season)
 		.then(res => res.json())
 		.then(res => this.setState({ season: res }));
+	}
+
+	getWatchedEpisodes() {
+		var skipToWatched = () => {
+			// find this ep in watched array
+			var progress = this.state.watched.find(episode => {
+				return episode.num === parseInt(this.props.params.episode);
+			});
+
+			if (progress) {
+				console.log(progress.percentage);
+				// todo: skip the video to this percentage
+			}
+		}
+		// if logged in, fetch episodes this user has watched
+		if (this.props.user) {
+			// init the array (so that this function isn't called again before the fetch completes)
+			this.state.watched = [];
+			fetch('/user/tracking/' + this.props.user.name + '/' + this.props.params.id + '/' + this.props.params.season)
+			.then(res => res.json())
+			.then(res => {
+				this.setState({ watched: res });
+				skipToWatched();
+			});
+		} else {
+			// otherwise, set watched back to an empty array
+			this.setState({ watched: [] });
+		}
 	}
 
 	getEpisodeInfo() {
