@@ -148,6 +148,12 @@ class Chromecast {
 	playOrPause() {
 		this.playerController.playOrPause();
 	}
+
+	seek(time) {
+		console.log("[chromecast] seeking to " + time);
+		this.player.currentTime = time;
+		this.playerController.seek();
+	}
 }
 
 export default Chromecast;

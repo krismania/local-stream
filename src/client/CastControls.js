@@ -43,6 +43,7 @@ class CastControls extends React.Component {
 		this.handlePlaying = this.handlePlaying.bind(this);
 		this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
 		this.playOrPause = this.playOrPause.bind(this);
+		this.handleSeek = this.handleSeek.bind(this);
 	}
 
 	componentWillMount() {
@@ -69,6 +70,12 @@ class CastControls extends React.Component {
 		this.props.chromecast.playOrPause();
 	}
 
+	handleSeek(event, newValue) {
+		var time = newValue;
+		this.setState({ currentTime: time });
+		this.props.chromecast.seek(time);
+	}
+
 	// helpers
 
 	timeFormat(time) {
@@ -92,7 +99,7 @@ class CastControls extends React.Component {
 							disableFocusRipple={true}
 							max={duration}
 							value={this.state.currentTime}
-							onChange={this.seek}
+							onChange={this.handleSeek}
 							sliderStyle={this.styles.slider}
 						/>
 					</div>
