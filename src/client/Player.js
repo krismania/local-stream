@@ -11,7 +11,7 @@ class Player extends React.Component {
 		super(props);
 
 		this.state = {
-			show: { id: '', title: '', year: '', seasons: [] },
+			show: { id: '', title: '', year: '', seasons: [], subtitles: false },
 			season: { num: null, title: '', episodes: [] },
 			watched: null,
 			episode: { num: null, title: '', src: null, next: null, prev: null },
@@ -22,6 +22,7 @@ class Player extends React.Component {
 		this.getEpisodes = this.getEpisodes.bind(this);
 		this.getWatchedEpisodes = this.getWatchedEpisodes.bind(this);
 		this.getEpisodeInfo = this.getEpisodeInfo.bind(this);
+		this.getSub = this.getSub.bind(this);
 		this.handlePrev = this.handlePrev.bind(this);
 		this.handleNext = this.handleNext.bind(this);
 		this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
@@ -103,6 +104,15 @@ class Player extends React.Component {
 		}
 	}
 
+	getSub(src) {
+		if (this.state.show.subtitles) {
+			return src.substr(0, src.lastIndexOf('.') + '.vtt');
+		}
+		else {
+			return null;
+		}
+	}
+
 	handlePrev() {
 		browserHistory.push('/stream/' + this.state.show.id + '/S' + this.props.params.season + '/' + this.state.episode.prev.num);
 	}
@@ -146,6 +156,7 @@ class Player extends React.Component {
 				<Video
 					key={Math.random()}
 					src={this.state.episode.src}
+					subtitles={this.state.show.subtitles}
 					onTimeUpdate={this.handleTimeUpdate}
 					chromecast={this.props.chromecast}
 					casting={this.props.casting}

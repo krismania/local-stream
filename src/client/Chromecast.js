@@ -100,48 +100,53 @@ class Chromecast {
 		return cast.framework.CastContext.getInstance().requestSession()
 	}
 
-	loadMedia(mediaURL) {
+	loadMedia(mediaURL, subtitles) {
 		var session = cast.framework.CastContext.getInstance().getCurrentSession();
 
 		console.log('Loading media');
 		var mediaInfo = new chrome.cast.media.MediaInfo(mediaURL, 'video/mp4');
 
-		// create subtitle track style
-		var textTrackStyle = new chrome.cast.media.TextTrackStyle();
-		textTrackStyle.fontFamily = 'sans-serif';
-		textTrackStyle.backgroundColor = '#00000000';
-		textTrackStyle.edgeType = chrome.cast.media.TextTrackEdgeType.OUTLINE;
-		textTrackStyle.edgeColor = '#000000FF';
-		textTrackStyle.fontScale = 0.8;
+		if (subtitles) {
+			// create subtitle track style
+			var textTrackStyle = new chrome.cast.media.TextTrackStyle();
+			textTrackStyle.fontFamily = 'sans-serif';
+			textTrackStyle.backgroundColor = '#00000000';
+			textTrackStyle.edgeType = chrome.cast.media.TextTrackEdgeType.OUTLINE;
+			textTrackStyle.edgeColor = '#000000FF';
+			textTrackStyle.fontScale = 0.8;
 
-		// create subtitle track
-		var englishSubtitle = new chrome.cast.media.Track(1, chrome.cast.media.TrackType.TEXT);
-		englishSubtitle.trackContentId = mediaURL.substr(0, mediaURL.lastIndexOf(".")) + ".vtt";
-		englishSubtitle.trackContentType = 'text/vtt';
-		englishSubtitle.subtype = chrome.cast.media.TextTrackType.SUBTITLES;
-		englishSubtitle.name = 'English Subtitles';
-		englishSubtitle.language = 'en-US';
-		englishSubtitle.customData = null;
+			// create subtitle track
+			var englishSubtitle = new chrome.cast.media.Track(1, chrome.cast.media.TrackType.TEXT);
+			englishSubtitle.trackContentId = mediaURL.substr(0, mediaURL.lastIndexOf(".")) + ".vtt";
+			englishSubtitle.trackContentType = 'text/vtt';
+			englishSubtitle.subtype = chrome.cast.media.TextTrackType.SUBTITLES;
+			englishSubtitle.name = 'English Subtitles';
+			englishSubtitle.language = 'en-US';
+			englishSubtitle.customData = null;
 
-		// add sub track to media info object
-		mediaInfo.tracks = [englishSubtitle];
-		mediaInfo.textTrackStyle = textTrackStyle;
+			// add sub track to media info object
+			mediaInfo.tracks = [englishSubtitle];
+			mediaInfo.textTrackStyle = textTrackStyle;
+		}
 
 		var request = new chrome.cast.media.LoadRequest(mediaInfo);
-		// set sub track as active
-		request.activeTrackIds = [1];
+
+		if (subtitles) {
+			// set sub track as active
+			request.activeTrackIds = [1];
+		}
 
 		session.loadMedia(request)
 		.then(function() { console.log('Load succeed') }, function(err) { console.log(err) });
 	}
 
-	cast(mediaURL) {
+	cast(mediaURL, subtitles) {
 		var session = cast.framework.CastContext.getInstance().getCurrentSession();
 		if (!session) { // no session available, we should request one
 			this.requestSession()
-			.then(this.loadMedia(mediaURL));
+			.then(this.loadMedia(mediaURL, subtitles));
 		} else {
-			this.loadMedia(mediaURL);
+			this.loadMedia(mediaURL, subtitles);
 		}
 	}
 

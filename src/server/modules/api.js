@@ -35,6 +35,7 @@ function getShowInfo(id) {
 	info.id = id;
 	info.title = json.title || '';
 	info.year = json.year || '?';
+	info.subtitles = json.subtitles || false;
 
 	// get array of season folders
 	// filter non-numbers (i.e. anything apart from numbered folders)

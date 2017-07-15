@@ -100,7 +100,8 @@ class Video extends React.Component {
 	// control video
 	playOrPause() {
 		if (this.props.casting) {
-			chromecast.cast(this.refs.video.src);
+			// this.props.subtitles is a boolean stating whether there are subs or not
+			chromecast.cast(this.refs.video.src, this.props.subtitles);
 		} else {
 			if (this.refs.video.paused) {
 				this.refs.video.play();
@@ -169,6 +170,19 @@ class Video extends React.Component {
 	}
 
 	render() {
+		let subTrack = null;
+		if (this.props.subtitles) {
+			subTrack = (
+				<track
+					src={this.props.src + '.vtt'}
+					kind="subtitles"
+					srcLang="en"
+					label="English"
+					default
+				/>
+			)
+		}
+
 		return (
 			<Paper
 				zDepth={2}
@@ -187,13 +201,7 @@ class Video extends React.Component {
 						onTimeUpdate={this.handleVideoTimeUpdate}
 						onDurationChange={this.handleVideoDurationChange}
 					>
-						<track
-							src={this.props.src + '.vtt'}
-							kind="subtitles"
-							srcLang="en"
-							label="English"
-							default
-						/>
+						{subTrack}
 					</video>
 					<div className={'overlay' + (this.props.casting ? ' visible' : '')}>
 						<span>Playing on {this.props.castName}</span>
