@@ -60,7 +60,8 @@ Each show folder should have an `info.json`, a `cover.png`, and at least one sea
 ```
 {
   "title": [String, friendly name of the show with special chars],
-  "year": [String, first broadcast year of the show]
+  "year": [String, first broadcast year of the show],
+  "subtitles": [Boolean, whether or not subtitles are available]
 }
 ```
 
