@@ -86,6 +86,11 @@ class CastControls extends React.Component {
 
 	render() {
 		var duration = this.props.chromecast.duration;
+		if (duration === 0) {
+			// set duration to 1 if nothing is loaded on the chromecast to avoid react warnings
+			// (scrubber max should be more than min)
+			duration = 1;
+		}
 		return (
 			<div style={{ width: '100%', height: '64px', display: this.props.casting ? 'block' : 'none' }}>
 				<Paper
@@ -97,6 +102,7 @@ class CastControls extends React.Component {
 						<Slider
 							ref="scrubber"
 							disableFocusRipple={true}
+							min={0}
 							max={duration}
 							value={this.state.currentTime}
 							onChange={this.handleSeek}
