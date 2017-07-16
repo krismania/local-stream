@@ -29,39 +29,57 @@ class Player extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log("Getting show info");
 		this.getShowInfo();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		console.log("Component update");
 		document.title = 'Season ' + this.props.params.season + ', Episode ' + this.props.params.episode + ' - ' + this.state.show.title + ' - LocalStream';
 		// check if show has changed
 		if(this.state.show !== prevState.show) {
+			console.log("Show changed");
 			// if it has, get the new show's episodes
 			this.getEpisodes();
 		}
 		// check if the current episode matches the URL param
 		if(parseInt(this.props.params.episode) !== this.state.episode.num) {
-			// if it doesn't, we need to fetch the new ep info
+			console.log(parseInt(this.props.params.episode), this.state.episode.num);
+			console.log("Episode changed");
+			// set the ep number to prevent looping here
+			this.setState({ episode: { num: parseInt(this.props.params.episode) }});
+			// since it doesn't match, we need to fetch the new ep info
 			this.getEpisodeInfo();
 			this.getWatchedEpisodes();
 		}
 		// check if the user's changed or if there's no watch array set
 		if (this.props.user !== prevProps.user || !this.state.watched) {
+			console.log("User changed or no watched array");
 			// if it has, we should update the watched episodes
 			this.getWatchedEpisodes();
 		}
 	}
 
 	getShowInfo() {
+		console.log("Fetching show info");
 		fetch('/api/shows/' + this.props.params.id)
 		.then(res => res.json())
 		.then(res => this.setState({ show: res }));
 	}
 
 	getEpisodes() {
+
+		function callback(res) {
+			console.log("episode info fetch complete");
+			this.setState({ season: res });
+			this.getEpisodeInfo();
+		}
+		callback = callback.bind(this);
+
+		console.log("Fetching episode info (all eps)");
 		fetch('/api/shows/' + this.props.params.id + '/S' + this.props.params.season)
 		.then(res => res.json())
-		.then(res => this.setState({ season: res }));
+		.then(callback);
 	}
 
 	getWatchedEpisodes() {
@@ -93,6 +111,7 @@ class Player extends React.Component {
 	}
 
 	getEpisodeInfo() {
+		console.log("Getting ep info");
 		// ep info is derived from this.state.season
 		var epNum = parseInt(this.props.params.episode);
 		var ep = this.state.season.episodes.find(episode => episode.num === epNum);
@@ -100,6 +119,7 @@ class Player extends React.Component {
 			ep.prev = this.state.season.episodes.find(episode => episode.num === epNum - 1) || null;
 			ep.next = this.state.season.episodes.find(episode => episode.num === epNum + 1) || null;
 			ep.src = '/static/media/' + this.props.params.id + '/' + this.props.params.season + '/' + this.props.params.episode;
+			console.log("Setting player ep state: ", ep);
 			this.setState({ episode: ep });
 		}
 	}
@@ -150,6 +170,7 @@ class Player extends React.Component {
 	}
 
 	render() {
+		console.log("Rendering");
 		var subString = 'Season ' + this.props.params.season + ' \u00B7 Episode ' + this.props.params.episode + ' \u00B7 ' + this.state.show.title;
 		return (
 			<div>
